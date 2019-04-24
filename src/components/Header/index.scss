@@ -1,0 +1,137 @@
+@import '../App/base.scss';
+$light-grey:rgb(201, 191, 175);
+
+
+#header {
+    grid-column: 1/3;
+    grid-row: 1;
+    width: 100%;
+}
+
+.none {
+    display: none;
+}
+
+#header-header {
+    position: relative;
+    top: 1px; //为了使上边框可以拖动缩放
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    -webkit-app-region: drag;
+
+    #header-left {
+        -webkit-app-region: no-drag;
+        user-select: none;
+        float: left;
+        margin-left: 25px;
+        margin-top: 15px;
+        height: 40px;
+
+        #header-user-icon:hover {
+            cursor: pointer;
+        }
+
+        #unlogin {
+            color: black;
+            float: right;
+            margin-left: 10px;
+            margin-top: 10px;
+            user-select: none;
+
+            &:hover {
+                color: $light-grey;
+                cursor: pointer;
+            }
+        }
+
+        #header-logged {
+            color: black;
+            margin-left: 10px;
+            margin-top: 11px;
+            float: right;
+            line-height: 0;
+            font-size: 12px;
+            user-select: none;
+
+            :first-child {
+                &:hover {
+                    color: $light-grey;
+                    cursor: pointer;
+                }
+            }
+        }
+
+        #header-logout {
+            color: $light-grey;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+    }
+
+    #header-right {
+        //background-color: white;
+        float: right;
+        line-height: 70px;
+
+        .header-icon {
+            color: black;
+            font-size: 15px;
+            margin-right: 25px;
+
+            &:hover {
+                color: $light-grey;
+                cursor: pointer;
+            }
+
+            -webkit-app-region: no-drag;
+        }
+
+
+        #header-search-icon {
+            font-size: 20px;
+            margin-right: 160px;
+
+        }
+
+        @keyframes header-text {
+            0% {
+                width: 0;
+            }
+
+            100% {
+                width: 190px;
+            }
+        }
+
+        .ant-select-selection {
+            background-color: rgba($color: #fff, $alpha: 0);
+        }
+
+
+
+        #header-search-text {
+            -webkit-app-region: no-drag;
+            width: 220px;
+            background: none;
+            height: 20px;
+            border-radius: 0;
+            border-bottom: 1px solid black;
+            border-top: 0px;
+            border-left: 0px;
+            border-right: 0px;
+            outline: medium;
+            margin-right: 10px;
+            animation: header-text linear 0.3s;
+        }
+
+
+    }
+    
+}
+
+.ant-select-dropdown-menu {
+    max-height: 600px;
+}

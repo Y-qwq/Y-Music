@@ -1,0 +1,99 @@
+@import '../App/base.scss';
+
+.list-detail {
+    grid-column: 2;
+    grid-row: 2/4;
+
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    position: relative;
+    padding-bottom: $play-bar-height;
+
+    @extend .wide-scroll-bar;
+
+    .list-info {
+        width: 100%;
+        margin-top: 40px;
+        min-height: 215px;
+        display: flex;
+        padding-bottom: 30px;
+        position: relative;
+
+        //background-color: seagreen;
+        h1 {
+            font-size: 28px;
+        }
+
+        .list-pic {
+            user-select: none;
+            width: 215px;
+            height: 215px;
+            float: left;
+            margin-left: 25px;
+            margin-right: 35px;
+        }
+
+        .download-cover{
+            font-size: 25px;
+            position: absolute;
+            top: 188px;
+            left: 213px;
+            &:hover{
+                color: #000;
+            }
+        }
+
+        .list-description {
+            flex-grow: 1;
+            margin-right: 25px;
+            width: 60%;
+            white-space: pre-wrap;
+            .list-tags{
+                user-select: none;
+            }
+            .list-count{
+                user-select: none;
+            }
+
+            .list-description-detail-unshow {
+                max-width: 80%;
+                display: -webkit-box;
+                /* autoprefixer: ignore next */
+                -webkit-box-orient: vertical;
+                /* autoprefixer: ignore next */
+                -webkit-line-clamp: 2;
+                overflow: hidden;
+            }
+
+            .list-description-detail-show {
+                max-width: 80%;
+                display: -webkit-box;
+                /* autoprefixer: ignore next */
+                -webkit-box-orient: vertical;
+                /* autoprefixer: ignore next */
+                -webkit-line-clamp: 99;
+                overflow: hidden;
+            }
+
+            .list-description-more {
+                float: right;
+                position: relative;
+                top: -26px;
+            }
+
+            .list-description-more-true {
+                transform: rotate(180deg);
+            }
+
+        }
+
+        .list-buttons {
+            margin-bottom: 20px;
+
+            .list-button {
+                margin-right: 20px;
+            }
+        }
+    }
+}

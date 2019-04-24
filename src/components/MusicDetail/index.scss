@@ -1,0 +1,144 @@
+.music-detail {
+    grid-row: 2;
+    width: 100%;
+    // transform-origin: bottom left;
+    z-index: 200;
+    // background-color: lightslategray;
+
+    .content {
+        margin: 0 auto;
+
+        .left-song-info {
+            float: left;
+            margin-top: 10px;
+            width: 420px;
+
+            h1 {
+                width: 900px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                position: relative;
+                font-size: 50px;
+                z-index: 201;
+            }
+
+            .song-artists {
+                display: inline;
+                color: #3668B1;
+                // &:hover {
+                //     cursor: pointer;
+                // }
+            }
+
+            .song-lyrics {
+                p {
+                    margin: 0;
+                }
+                
+                margin-top: 20px;
+                width: 100%;
+                height: 350px;
+                white-space: pre-line;
+                text-overflow: ellipsis;
+                overflow: auto;
+
+                .lyrics-context{
+                    position: relative;
+                }
+
+                .song-lyric {
+                    font-size: 17px;
+                    margin-bottom: 30px;
+                }
+
+                .song-tlyric {
+                    // display: none;
+                    font-size: 15px;
+                    position: relative;
+                    top: -25px;
+                }
+
+                .song-line {
+                    color: #000;
+                }
+
+                .song-lyric-none {
+                    font-size: 17px;
+                    margin-top: 20px;
+                }
+            }
+
+            ::-webkit-scrollbar {
+                width: 0;
+            }
+        }
+
+        .right-play-info {
+            width: 520px;
+            height: 525px;
+            user-select: none;
+            float: right;
+            margin-top: 16px;
+
+            .play-time {
+                position: relative;
+                top: -25px;
+                width: 75px;
+                height: 20px;
+                background-color: rgba($color: #fff, $alpha: 0.4);
+                z-index: 201;
+                color: black;
+
+                &:hover {
+                    background-color: rgba($color: #fff, $alpha: 0.8);
+                }
+            }
+
+            .download-cover {
+                float: right;
+                font-size: 30px;
+                position: relative;
+                top: -58px;
+                right: 8px;
+                z-index: 202;
+
+                &:hover {
+                    cursor: pointer;
+                    color: black;
+                }
+            }
+
+            .total-time-bar {
+                width: 100%;
+                height: 10px;
+                position: relative;
+                z-index: 201;
+                top: -25px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+            .current-time-bar {
+                max-width: 100%;
+                height: 10px;
+                background-color: antiquewhite;
+                z-index: 202;
+                box-shadow: 3px 3px 10px rgb(194, 194, 194);
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+
+
+            .song-cover {
+                width: 520px;
+                height: 520px;
+                box-shadow: 3px 3px 10px gray;
+            }
+        }
+    }
+}

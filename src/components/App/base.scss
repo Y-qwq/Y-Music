@@ -1,0 +1,20 @@
+$play-bar-height: 95px;
+$play-bar-opacity: 0.4;
+
+$left-nav-width: 80px;
+$header-height: 85px;
+
+.wide-scroll-bar {
+    &::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        background-color: rgb(180, 179, 179);
+
+        &:hover {
+            background-color: gray;
+        }
+    }
+}

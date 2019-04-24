@@ -1,0 +1,41 @@
+.button-component {
+
+    // 自定义Button样式
+    .ant-btn {
+        padding: 0 12px;
+        height: 30px;
+        border-color: #d9d9d9;
+        font-size: 13px;
+        color: #000;
+        background-color: #fff;
+
+        &:hover {
+            color: #333;
+            background-color: #F5F5F7;
+        }
+
+        &:focus {
+            color: rgba(0, 0, 0, .65);
+        }
+    }
+
+    .play-all-button {
+        .ant-btn {
+            color: #fff;
+            background-color: #C62F2F;
+            border-color: #CA4343;
+
+            &:hover {
+                background-color: #B12323;
+            }
+        }
+    }
+    
+
+    // 消除光晕
+    button[ant-click-animating-without-extra-node]:after {
+        border: 0 none;
+        opacity: 0;
+        animation: none 0 ease 0 1 normal;
+    }
+}

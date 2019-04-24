@@ -1,0 +1,93 @@
+.song-list {
+    width: 100%;
+
+    .list-table {
+        width: 100%;
+        table-layout: fixed;
+
+        .list-row-head {
+            border-bottom: 1px solid gray;
+            user-select: none;
+        }
+
+        .list-row {
+            height: 40px;
+            border-bottom: 1px solid gray;
+            user-select: none;
+
+            &:hover {
+                background-color: rgba($color: #000000, $alpha: 0.05);
+            }
+        }
+
+        .list-head-null {
+            width: 50px;
+            // border: 1px solid black;
+        }
+
+        .list-head {
+            width: 1fr;
+        }
+
+        .list-count {
+            text-align: center;
+            padding-left: 13px;
+        }
+
+        .list-action {
+            text-align: center;
+            padding-right: 12px;
+
+            .list-heart {
+                color: black;
+                font-size: 20px;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+
+
+        .list-span {
+            display: inline-block;
+            width: 85%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            
+
+        }
+
+        .list-song-name {
+            color: rgba($color: #000000, $alpha: .9);
+
+            &:hover {
+                color: black;
+            }
+        }
+
+        .list-song-artist {
+            display: inline;
+
+            &:hover {
+                cursor: pointer;
+                color: black;
+            }
+        }
+
+        .list-song-album {
+            &:hover {
+                cursor: pointer;
+                color: black;
+            }
+        }
+    }
+}
+.list-menu-icon{
+    font-size: 18px;
+    margin-right: 8px;
+}
+.list-menu-collect{
+    font-size: 20px;
+}

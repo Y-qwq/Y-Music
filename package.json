@@ -1,0 +1,50 @@
+{
+  "name": "my-music",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./public/electronMain.js",
+  "homepage": ".",
+  "dependencies": {
+    "antd": "^3.16.3",
+    "axios": "^0.18.0",
+    "d3-ease": "^1.0.5",
+    "nedb": "^1.8.0",
+    "react": "^16.8.4",
+    "react-contexify": "^4.0.2",
+    "react-dom": "^16.8.4",
+    "react-move": "^5.2.1",
+    "react-redux": "^6.0.1",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.4.0",
+    "react-router-redux": "^4.0.8",
+    "react-scripts": "2.1.8",
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies":{
+    "babel-plugin-import": "^1.11.0",
+    "customize-cra": "^0.2.12",
+    "electron": "^4.0.8",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
+    "node-sass": "^4.11.0",
+    "react-app-rewired": "^2.1.1",
+    "redux-logger": "^3.0.6"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject",
+    "ele-start": "electron ."
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
