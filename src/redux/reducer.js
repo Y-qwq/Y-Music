@@ -13,7 +13,6 @@ import {
     PERSONALIZEDPLAYLIST,
     RECOMMENDPLAYLIST,
     USERCOLLECTLIST,
-    PLAYLISTDETIL,
     PLAYALL,
     ADDPLAYALL,
     TOGGLESPECIFIEDSONG,
@@ -54,6 +53,7 @@ export function user(state = userInitialState, action) {
                 loginFailedMsg: '',
                 loading: false
             }
+            
         case LOADING:
             return {
                 ...state,
@@ -244,24 +244,16 @@ export function playInfo(state = playInfoInitialState, action) {
 
 
 const playListInitialState = {
-    offset: 0, // 暂存歌单偏移量
+    offset: 0, // 暂存歌单位置偏移量
     personalizedList: [], // 推荐歌单or未登录歌单列表
     recommendList: [], // 日推歌单
     userCollectList: [], // 用户歌单（自建&&收藏的歌单）
     userPlayList: [], //用户自己的歌单(自建)
+    //分类歌单
     categoryPlayList: {
         cat: "",
         playlists: []
-    }, //分类歌单
-    currentPlayLIstDetil: {
-        playlist: {
-            tags: "",
-            description: '',
-            coverImgUrl: "",
-            id: null,
-            tracks: []
-        }
-    }, // 当前歌单详细信息
+    },
 }
 
 export function playList(state = playListInitialState, action) {
@@ -289,12 +281,6 @@ export function playList(state = playListInitialState, action) {
                 userCollectList: action.playList
             }
 
-        case PLAYLISTDETIL:
-            return {
-                ...state,
-                currentPlayLIstDetil: action.detil
-            }
-
         case CATEGORYPLAYLIST:
             let categoryPlayList;
             if (action.isAdd) {
@@ -307,12 +293,21 @@ export function playList(state = playListInitialState, action) {
                 ...state,
                 categoryPlayList
             }
+
         case USERSUBCOUNT:
             const userPlayList = state.userCollectList.slice(0, action.payload.createdPlaylistCount);
             return {
                 ...state,
                 userPlayList
             }
+
+        case LOGOUT:
+            return {
+                ...state,
+                userCollectList: [],
+                userPlayList: [],
+            }
+
 
         default:
             return state;

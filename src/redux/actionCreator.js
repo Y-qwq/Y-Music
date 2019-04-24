@@ -30,7 +30,6 @@ import {
     PERSONALIZEDPLAYLIST,
     RECOMMENDPLAYLIST,
     USERCOLLECTLIST,
-    PLAYLISTDETIL,
     PLAYALL,
     ADDPLAYALL,
     TOGGLESPECIFIEDSONG,
@@ -568,13 +567,7 @@ const uerPlayList = (payload) => {
         playList: payload
     }
 }
-// 获取歌单详细信息
-const playListDetil = (payload) => {
-    return {
-        type: PLAYLISTDETIL,
-        detil: payload
-    }
-}
+
 // 只获得用户的歌单
 export const setUserSubcount = (payload) => {
     return {
@@ -620,8 +613,7 @@ export const getOnePlayListDetail = (id, playall = false) => {
     return async dispatch => {
         try {
             let res = await getPlayListDetail(id);
-            if (res.data.code === 200) {
-                dispatch(playListDetil(res.data));
+            if (res.data.code === 200 && playall) {
                 if (playall) {
                     dispatch(playAll(res.data.playlist.tracks));
                     dispatch(onToggleSong(true, false, true));

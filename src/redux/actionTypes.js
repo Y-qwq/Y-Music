@@ -46,9 +46,6 @@ export const RECOMMENDSONGS = 'RECOMMENDSONGS';
 // 用户的歌单
 export const USERCOLLECTLIST = 'USERCOLLECTLIST';
 
-// 获取歌单详细信息
-export const PLAYLISTDETIL = 'PLAYLISTDETIL';
-
 // 添加所有歌曲到歌单尾部
 export const ADDPLAYALL = 'ADDPLAYALL';
 
