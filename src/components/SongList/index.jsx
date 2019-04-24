@@ -49,7 +49,7 @@ class SongList extends Component {
   };
 
   handleRedirect = (id, type) => {
-    this.props.history.push(`/playlistdetail/${type.substring(0, type.length - 1)}/${id}`);
+    this.props.history.push(`/playlistdetail/${type}/${id}`);
   };
 
   /**
