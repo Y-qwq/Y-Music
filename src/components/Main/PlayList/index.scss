@@ -17,8 +17,7 @@
         overflow-x: auto;
         overflow-y: hidden;
         //background-color: #555;
-        
-        
+            
 
         .none {
             display: none;
@@ -103,20 +102,16 @@
             -webkit-line-clamp: 2;
             overflow: hidden;
 
+            transition: all 0.25s ease;
+            transition-delay: 0.4s;
+            transform: translateY(0);
             &:hover {
                 cursor: pointer;
             }
         }
 
         .list-show {
-            animation: showName linear 0.2s;
-            animation-fill-mode: forwards;
-        }
-
-        .list-unshow {
-            // animation: unShowName linear 0.2s;
-            // animation-fill-mode: forwards;
-            top: -47px;
+            transform: translateY(47px);
         }
 
         .play-list-image {

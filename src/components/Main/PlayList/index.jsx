@@ -12,12 +12,9 @@ class PlayList extends Component {
       imageUrl: "picUrl",
       playList: [],
       playListWidth: "",
-      showListName: 0, // 显示该id歌单名字
+      showNameId: 0, // 显示该id歌单名字
       translateX: 0 // 位移量
     };
-
-    // 暂存定时器
-    this.timer = null;
 
     // 利用时间差区分拖动与点击事件
     this.downTime = null;
@@ -29,7 +26,7 @@ class PlayList extends Component {
     this.lastX = null;
     this.moving = false;
 
-    this.getNextCategoryPlayList = debounce(this.props.getNextCategoryPlayList,2000,true);
+    this.getNextCategoryPlayList = debounce(this.props.getNextCategoryPlayList, 2000, true);
 
     // 歌单拖动相关
     // 直接监听window，然后事件处理时取消冒泡，以达到鼠标即使移出歌单的div也能继续移动的效果
@@ -52,7 +49,6 @@ class PlayList extends Component {
     window.onmouseup = null;
     window.onmousemove = null;
     window.onresize = null;
-    clearTimeout(this.timer);
   }
 
   componentDidUpdate(preProps, preState) {
@@ -159,23 +155,12 @@ class PlayList extends Component {
   };
 
   // 显示歌单名
-  handleShowListName = e => {
-    let id = e.currentTarget.id;
-    this.timer = setTimeout(() => {
-      this.setState({
-        showListName: +id
-      });
-    }, 400);
-  };
-  // 鼠标停留低于400ms离开时 取消显示歌单名
-  handleCancelSowListName = () => {
-    clearTimeout(this.timer);
-    this.timer = null;
-    setTimeout(() => {
-      this.setState({
-        showListName: -1
-      });
-    }, 400);
+  handleToggleShowName = (e, cancel = false) => {
+    let showNameId = -1;
+    if (!cancel) showNameId = Number(e.currentTarget.id);
+    this.setState({
+      showNameId
+    });
   };
 
   // 处理点击歌单跳转
@@ -225,7 +210,7 @@ class PlayList extends Component {
         translateX: offset
       });
       if (this.props.categoryList.playlists.length > 0) {
-        this.getNextCategoryPlayList(this.props.categoryList.cat);
+        this.props.getNextCategoryPlayList(this.props.categoryList.cat);
       }
       return false;
     }
@@ -234,7 +219,7 @@ class PlayList extends Component {
 
   render() {
     const { categoryList, getOneListDetail, isLogged, match } = this.props;
-    const { playList, imageUrl, showListName, translateX, playListWidth } = this.state;
+    const { playList, imageUrl, showNameId, translateX, playListWidth } = this.state;
 
     const showPlayList = (mirror = false) => {
       if (!mirror) {
@@ -249,13 +234,13 @@ class PlayList extends Component {
                     }}
                     className="play-list"
                     id={detil.id}
-                    onMouseEnter={this.handleShowListName}
-                    onMouseLeave={this.handleCancelSowListName}
+                    onMouseEnter={this.handleToggleShowName}
+                    onMouseLeave={this.handleToggleShowName.bind(this, true)}
                     key={index}
                   >
                     <p
                       id={detil.id + 77777}
-                      className={`play-list-name ${showListName === detil.id ? "list-show" : ""}`}
+                      className={`play-list-name ${showNameId === detil.id ? "list-show" : ""}`}
                     >
                       {detil.name}
                     </p>
@@ -267,7 +252,7 @@ class PlayList extends Component {
                     />
                     <MyIcon
                       type="icon-bofang3"
-                      className={showListName === detil.id ? "play-all-icon" : "none"}
+                      className={showNameId === detil.id ? "play-all-icon" : "none"}
                       onClick={e => {
                         getOneListDetail(e, detil.id, true);
                       }}
@@ -320,16 +305,12 @@ class PlayList extends Component {
                 }}
                 className="play-list-daily"
                 id="1"
-                onMouseEnter={e => {
-                  this.handleShowListName(e);
-                }}
-                onMouseLeave={this.handleCancelSowListName}
+                onMouseEnter={this.handleToggleShowName}
+                onMouseLeave={this.handleToggleShowName.bind(this, true)}
               >
                 <p
                   className={`play-list-name ${
-                    showListName === 1 || showListName === 2 || showListName === 3
-                      ? "list-show"
-                      : ""
+                    showNameId === 1 || showNameId === 2 || showNameId === 3 ? "list-show" : ""
                   }`}
                 >
                   根据你的音乐口味生成 日推&nbsp;&nbsp;( *・ω・)✄╰ひ╯
