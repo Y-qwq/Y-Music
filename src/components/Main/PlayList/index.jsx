@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import MyIcon from "../../../assets/MyIcon";
 import { connect } from "react-redux";
-import { getOnePlayListDetail, setOffset } from "../../../redux/actionCreator";
+import { getOnePlayListDetail, setOffset, getCategoryPlayList } from "../../../redux/actionCreator";
 import "./index.scss";
+import { debounce } from "../../../util/util";
 
 class PlayList extends Component {
   constructor(props) {
@@ -11,55 +12,47 @@ class PlayList extends Component {
       imageUrl: "picUrl",
       playList: [],
       playListWidth: "",
-      type: "find", // 当前组件显示的内容
       showListName: 0, // 显示该id歌单名字
       translateX: 0 // 位移量
     };
-    // 组件是否要卸载 用于取消componentWillReceiveProps事件，防止内存泄漏
-    this.isUnmount = false;
 
     // 暂存定时器
     this.timer = null;
 
-    // 区分拖动与点击事件
+    // 利用时间差区分拖动与点击事件
     this.downTime = null;
     this.upTime = null;
 
     //存储星期x
     this.week = null;
 
+    this.lastX = null;
+    this.moving = false;
+
+    this.getNextCategoryPlayList = debounce(this.props.getNextCategoryPlayList,2000,true);
+
     // 歌单拖动相关
     // 直接监听window，然后事件处理时取消冒泡，以达到鼠标即使移出歌单的div也能继续移动的效果
     window.onmouseup = e => this.handleStopMove(e);
     window.onmousemove = e => this.handleMoving(e);
     window.onresize = () => this.offsetListener(this.state.translateX);
-    this.lastX = null;
-    this.moving = false;
   }
 
   componentDidMount() {
     // 主要是监听用鼠标侧键从歌单返回时事件，因为props不变化,componentWillReceiveProps触发不了
-    if (this.props.match.params.type === "collect") {
-      this.setState({
-        type: "collect",
-        translateX: this.props.offset
-      });
-    } else if (this.props.match.params.type === "find") {
-      this.setState({
-        type: "find",
-        translateX: this.props.offset
-      });
-    }
+    this.setState({
+      translateX: this.props.offset
+    });
     this.handleShowDaliy();
     this.initialPlayList(this.props, this.props.match.params.type);
   }
 
   componentWillUnmount() {
     this.props.onSetOffset(this.state.translateX);
-    this.isUnmount = true;
     window.onmouseup = null;
     window.onmousemove = null;
     window.onresize = null;
+    clearTimeout(this.timer);
   }
 
   componentDidUpdate(preProps, preState) {
@@ -70,29 +63,21 @@ class PlayList extends Component {
 
     // 监听路由参数是否变化动态更新歌单
     if (
-      !this.isUnmount &&
-      preProps.match.params.type !== this.props.match.params.type &&
-      this.props.match.params.type === "collect"
+      this.props.match.params.type &&
+      preProps.match.params.type !== this.props.match.params.type
     ) {
       this.setState({
-        type: "collect"
-      });
-    } else if (
-      !this.isUnmount &&
-      preProps.match.params.type !== this.props.match.params.type &&
-      this.props.match.params.type === "find"
-    ) {
-      this.setState({
-        type: "find"
+        type: this.props.match.params.type
       });
     }
 
     // 更改显示歌单时重新初始化歌单属性信息
     if (
       this.props.categoryList.cat !== preProps.categoryList.cat ||
+      this.props.categoryList.playlists.length !== preProps.categoryList.playlists.length ||
       this.props.personalizedList.length !== preProps.personalizedList.length ||
       this.props.recommendList.length !== preProps.recommendList.length ||
-      this.state.type !== preState.type
+      this.props.match.params.type !== preProps.match.params.type
     ) {
       this.initialPlayList(this.props, this.props.match.params.type);
     }
@@ -198,7 +183,6 @@ class PlayList extends Component {
     if (this.upTime - this.downTime < 200) {
       this.upTime = null;
       this.downTime = null;
-      this.isUnmount = true;
       this.props.history.push(`/playlistdetail/playlist/${id}`);
     }
   };
@@ -235,20 +219,24 @@ class PlayList extends Component {
   // 监听偏移量
   offsetListener = translateX => {
     let offset = -1 * (this.state.playListWidth - window.innerWidth + 80);
+    // 拖动到尽头
     if (translateX < offset) {
       this.setState({
         translateX: offset
       });
+      if (this.props.categoryList.playlists.length > 0) {
+        this.getNextCategoryPlayList(this.props.categoryList.cat);
+      }
       return false;
     }
     return true;
   };
 
   render() {
-    const { categoryList } = this.props;
+    const { categoryList, getOneListDetail, isLogged, match } = this.props;
+    const { playList, imageUrl, showListName, translateX, playListWidth } = this.state;
 
     const showPlayList = (mirror = false) => {
-      const { playList, imageUrl } = this.state;
       if (!mirror) {
         return (
           <>
@@ -267,9 +255,7 @@ class PlayList extends Component {
                   >
                     <p
                       id={detil.id + 77777}
-                      className={`play-list-name ${
-                        this.state.showListName === detil.id ? "list-show" : ""
-                      }`}
+                      className={`play-list-name ${showListName === detil.id ? "list-show" : ""}`}
                     >
                       {detil.name}
                     </p>
@@ -281,9 +267,9 @@ class PlayList extends Component {
                     />
                     <MyIcon
                       type="icon-bofang3"
-                      className={this.state.showListName === detil.id ? "play-all-icon" : "none"}
+                      className={showListName === detil.id ? "play-all-icon" : "none"}
                       onClick={e => {
-                        this.props.getOneListDetail(e, detil.id, true);
+                        getOneListDetail(e, detil.id, true);
                       }}
                     />
                   </div>
@@ -320,14 +306,14 @@ class PlayList extends Component {
             return false;
           }}
           className="main-play-list"
-          onMouseDown={this.handleActivateMove.bind(this)}
+          onMouseDown={this.handleActivateMove}
           style={{
-            transform: `translateX(${this.state.translateX}px)`,
-            width: `${this.state.playListWidth}px`
+            transform: `translateX(${translateX}px)`,
+            width: `${playListWidth}px`
           }}
         >
           <div className="main-list">
-            {this.props.isLogged && this.state.type === "find" && !categoryList.cat && (
+            {isLogged && match.params.type === "find" && !categoryList.cat && (
               <div
                 onClick={() => {
                   this.handleRedirect(0);
@@ -341,9 +327,7 @@ class PlayList extends Component {
               >
                 <p
                   className={`play-list-name ${
-                    this.state.showListName === 1 ||
-                    this.state.showListName === 2 ||
-                    this.state.showListName === 3
+                    showListName === 1 || showListName === 2 || showListName === 3
                       ? "list-show"
                       : ""
                   }`}
@@ -362,14 +346,12 @@ class PlayList extends Component {
           </div>
 
           <div className="main-list-mirror">
-            {this.props.isLogged &&
-              this.state.type === "find" &&
-              categoryList.playlists === undefined && (
-                <div className="play-list-daily">
-                  <p className="week">{this.week}</p>
-                  <p className="day">{new Date().getDate()}</p>
-                </div>
-              )}
+            {isLogged && match.params.type === "find" && categoryList.playlists === undefined && (
+              <div className="play-list-daily">
+                <p className="week">{this.week}</p>
+                <p className="day">{new Date().getDate()}</p>
+              </div>
+            )}
             {showPlayList(true)}
           </div>
         </div>
@@ -399,6 +381,9 @@ const mapDispatchToProps = dispatch => {
     },
     onSetOffset: translateX => {
       dispatch(setOffset(translateX));
+    },
+    getNextCategoryPlayList: cat => {
+      dispatch(getCategoryPlayList(cat, 50, true));
     }
   };
 };

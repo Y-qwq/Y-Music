@@ -233,7 +233,7 @@ export function playInfo(state = playInfoInitialState, action) {
         case FMMODE:
             return {
                 ...state,
-                isFM:action.isFM
+                isFM: action.isFM
             }
 
         default:
@@ -296,11 +296,17 @@ export function playList(state = playListInitialState, action) {
             }
 
         case CATEGORYPLAYLIST:
+            let categoryPlayList;
+            if (action.isAdd) {
+                categoryPlayList = JSON.parse(JSON.stringify(state.categoryPlayList));
+                categoryPlayList.playlists = categoryPlayList.playlists.concat(action.payload.playlists)
+            } else {
+                categoryPlayList = action.payload;
+            }
             return {
                 ...state,
-                categoryPlayList: action.payload
+                categoryPlayList
             }
-
         case USERSUBCOUNT:
             const userPlayList = state.userCollectList.slice(0, action.payload.createdPlaylistCount);
             return {

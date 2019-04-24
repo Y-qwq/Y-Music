@@ -584,10 +584,11 @@ export const setUserSubcount = (payload) => {
 }
 
 // 获取某类歌单
-export const categoryPlayList = (payload) => {
+export const categoryPlayList = (payload, isAdd) => {
     return {
         type: CATEGORYPLAYLIST,
-        payload
+        payload,
+        isAdd
     }
 }
 
@@ -680,12 +681,17 @@ export const getuerList = (id) => {
 }
 
 // 分类歌单
-export const getCategoryPlayList = (cat, limit = 50) => {
-    return async (dispatch) => {
+export const getCategoryPlayList = (cat, limit = 50, isNext) => {
+    return async (dispatch, getState) => {
+        let offset = 0;
+        let catList = getState().playList.categoryPlayList;
+        if (isNext && catList.more) {
+            offset = catList.playlists.length;
+        }
         try {
-            let res = await getOneCategory(cat, limit);
+            let res = await getOneCategory(cat, limit, offset);
             if (res.data.code === 200) {
-                dispatch(categoryPlayList(res.data));
+                dispatch(categoryPlayList(res.data, offset > 0 ? true : false));
             }
         } catch (err) {
             console.log(err && err.response && err.response.data && err.response.data.msg);

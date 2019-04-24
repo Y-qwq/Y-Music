@@ -271,8 +271,8 @@ const mapDispatchToProps = dispatch => {
     getPersonalizedPlayList: () => {
       dispatch(getPersonalizedList());
     },
-    getOneCategoryPlayList: cat => {
-      dispatch(getCategoryPlayList(cat));
+    getOneCategoryPlayList: (cat, limit = 50, isNext = false) => {
+      dispatch(getCategoryPlayList(cat, limit, isNext));
     },
     delCategoryPlayList: () => {
       dispatch(categoryPlayList({ cat: "", playlists: [] }));

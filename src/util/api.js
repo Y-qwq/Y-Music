@@ -135,10 +135,11 @@ export const getPlayListCategory = () => {
  * @param {String} cat 分类名 
  * @param {Number} limit 获取数量 
  */
-export const getOneCategory = (cat, limit) => {
+export const getOneCategory = (cat, limit, offset = 0) => {
     // 不手动添加cat，axios会在转义的基础上再次转义
     return GET(`/top/playlist?cat=${encodeURIComponent(cat)}`, {
-        limit
+        limit,
+        offset
     });
 }
 
