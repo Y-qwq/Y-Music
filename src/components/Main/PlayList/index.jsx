@@ -15,6 +15,8 @@ class PlayList extends Component {
       showNameId: 0, // 显示该id歌单名字
       translateX: 0 // 位移量
     };
+    // 歌单的Ref
+    this.listRef = React.createRef();
 
     // 利用时间差区分拖动与点击事件
     this.downTime = null;
@@ -23,40 +25,31 @@ class PlayList extends Component {
     //存储星期x
     this.week = null;
 
+    // 拖动flag
     this.lastX = null;
     this.moving = false;
 
-    this.getNextCategoryPlayList = debounce(this.props.getNextCategoryPlayList, 2000, true);
-
-    // 歌单拖动相关
-    // 直接监听window，然后事件处理时取消冒泡，以达到鼠标即使移出歌单的div也能继续移动的效果
-    window.onmouseup = e => this.handleStopMove(e);
-    window.onmousemove = e => this.handleMoving(e);
-    window.onresize = () => this.offsetListener(this.state.translateX);
+    this.getNextCategoryPlayList = debounce(this.props.getNextCategoryPlayList, 500, true);
   }
 
   componentDidMount() {
-    // 主要是监听用鼠标侧键从歌单返回时事件，因为props不变化,componentWillReceiveProps触发不了
-    this.setState({
-      translateX: this.props.offset
-    });
+    // 歌单拖动相关
+    // 直接监听window，然后事件处理时取消冒泡，以达到鼠标即使移出歌单的div也能继续移动的效果
+    window.onmouseup = e => this.handleUp(e);
+    window.onmousemove = e => this.handleMoving(e);
     this.handleShowDaliy();
     this.initialPlayList(this.props, this.props.match.params.type);
+    this.listRef.current.onwheel = this.handleWheel;
+    this.listRef.current.onscroll = this.scrollLister;
   }
 
   componentWillUnmount() {
-    this.props.onSetOffset(this.state.translateX);
+    this.props.onSetOffset(this.listRef.current.scrollLeft);
     window.onmouseup = null;
     window.onmousemove = null;
-    window.onresize = null;
   }
 
   componentDidUpdate(preProps, preState) {
-    // 监听偏移量，检测是否需要修改当前translateX的值
-    if (preProps.isLogged !== this.props.isLogged) {
-      this.offsetListener(this.state.translateX);
-    }
-
     // 监听路由参数是否变化动态更新歌单
     if (
       this.props.match.params.type &&
@@ -65,6 +58,11 @@ class PlayList extends Component {
       this.setState({
         type: this.props.match.params.type
       });
+    }
+
+    // 其他页面返回时，恢复scrollLeft
+    if (this.state.playList.length > 0 && preState.playList.length === 0) {
+      this.listRef.current.scrollLeft = this.props.offset;
     }
 
     // 更改显示歌单时重新初始化歌单属性信息
@@ -172,54 +170,51 @@ class PlayList extends Component {
     }
   };
 
+  // 鼠标滑轮滚动
+  handleWheel = e => {
+    this.listRef.current.scrollLeft += e.deltaY / 2;
+  };
+
+  // 歌单scroll监听
+  scrollLister = () => {
+    if (
+      this.props.categoryList.playlists.length > 0 &&
+      this.listRef.current.scrollWidth -
+        this.listRef.current.offsetWidth -
+        this.listRef.current.scrollLeft <
+        150
+    ) {
+      this.getNextCategoryPlayList(this.props.categoryList.cat);
+    }
+  };
+
   // 鼠标按下时激活
-  handleActivateMove = e => {
+  handleDown = e => {
     e.stopPropagation();
     this.moving = true;
     this.downTime = +new Date();
   };
+  // 激活状态时修改位移
+  handleMoving = e => {
+    if (this.moving) {
+      if (this.lastX) {
+        let dx = this.lastX - e.clientX;
+        this.listRef.current.scrollLeft += dx;
+      }
+      this.lastX = e.clientX;
+    }
+  };
   // 鼠标松开时取消激活状态
-  handleStopMove = e => {
+  handleUp = e => {
     e.stopPropagation();
     this.moving = false;
     this.lastX = null;
     this.upTime = +new Date();
   };
-  // 激活状态时修改位移
-  handleMoving = e => {
-    if (this.moving && this.lastX) {
-      let dx = e.clientX - this.lastX;
-      let translateX = this.state.translateX + dx;
-      translateX = translateX > 0 ? 0 : translateX;
-      if (!this.offsetListener(translateX)) {
-        return;
-      }
-      this.setState({
-        translateX
-      });
-    }
-    this.lastX = e.clientX;
-  };
-
-  // 监听偏移量
-  offsetListener = translateX => {
-    let offset = -1 * (this.state.playListWidth - window.innerWidth + 80);
-    // 拖动到尽头
-    if (translateX < offset) {
-      this.setState({
-        translateX: offset
-      });
-      if (this.props.categoryList.playlists.length > 0) {
-        this.props.getNextCategoryPlayList(this.props.categoryList.cat);
-      }
-      return false;
-    }
-    return true;
-  };
 
   render() {
     const { categoryList, getOneListDetail, isLogged, match } = this.props;
-    const { playList, imageUrl, showNameId, translateX, playListWidth } = this.state;
+    const { playList, imageUrl, showNameId, playListWidth } = this.state;
 
     const showPlayList = (mirror = false) => {
       if (!mirror) {
@@ -285,15 +280,14 @@ class PlayList extends Component {
     };
 
     return (
-      <div id="main-play">
+      <div id="main-play" ref={this.listRef}>
         <div
           onDragStart={() => {
             return false;
           }}
           className="main-play-list"
-          onMouseDown={this.handleActivateMove}
+          onMouseDown={this.handleDown}
           style={{
-            transform: `translateX(${translateX}px)`,
             width: `${playListWidth}px`
           }}
         >
