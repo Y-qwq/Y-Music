@@ -4,7 +4,8 @@ import "./index.scss";
 import MyIcon from "../../assets/MyIcon.js";
 import { currentTime } from "../../redux/actionCreator";
 import { Animate } from "react-move";
-import { timeConversion, Tween, download } from "../../util/util";
+import { easeCubicOut } from "d3-ease";
+import { timeConversion, download } from "../../util/util";
 
 // 进度条宽度
 const MAX_BAR_WIDTH = 520;
@@ -128,10 +129,9 @@ export class MusicDetail extends Component {
 
     const run = () => {
       if (this.lrcScrollRef) {
-        this.lrcScrollRef.current.scrollTop = Math.ceil(Tween.Quad.easeOut(t, b, c, d));
-        t++;
+        this.lrcScrollRef.current.scrollTop = b + Math.ceil(c * easeCubicOut((t += 1 / d)));
         this.easiingTimer = setTimeout(run, 1000 / 60);
-        if (t >= d) {
+        if (t >= 1) {
           clearTimeout(this.easiingTimer);
         }
       } else {
@@ -271,12 +271,7 @@ export class MusicDetail extends Component {
                     </article>
                   </div>
                   <div className="right-play-info">
-                    <img
-                      src={this.props.curUrl}
-                      alt=""
-                      className="song-cover"
-                      draggable={false}
-                    />
+                    <img src={this.props.curUrl} alt="" className="song-cover" draggable={false} />
                     <div className="play-time">
                       {this.moving
                         ? timeConversion(this.widthToTime() * 1000)
