@@ -16,6 +16,7 @@ import {
 import "./index.scss";
 import { timeConversion, download } from "../../util/util";
 import { withRouter } from "react-router-dom";
+import { getComment } from "../../util/api";
 
 class PlayBar extends Component {
   constructor(props) {
@@ -23,7 +24,8 @@ class PlayBar extends Component {
     this.state = {
       isShowLyrics: false,
       volume: 100,
-      playListVisible: false
+      playListVisible: false,
+      commentCount: 0
     };
     this.audioRef = React.createRef();
   }
@@ -93,6 +95,15 @@ class PlayBar extends Component {
     }
   };
 
+  handleGetCommentCount = async id => {
+    let res = await getComment(id, 0);
+    if (res.data.code === 200) {
+      this.setState({
+        commentCount: res.data.total > 999 ? "999+" : res.data.total
+      });
+    }
+  };
+
   componentDidUpdate(prevProps) {
     if (prevProps.playInfo.playState !== this.props.playInfo.playState) {
       if (/^.*?\.(mp3|wav|flac|ape|aac|ogg)$/.test(this.audioRef.current.src)) {
@@ -109,6 +120,9 @@ class PlayBar extends Component {
       this.props.curTrack &&
       this.props.curTrack.id !== (prevProps.curTrack && prevProps.curTrack.id)
     ) {
+      // 获取评论数
+      this.handleGetCommentCount(this.props.curTrack.id);
+
       // 获取歌词
       if (
         this.state.isShowLyrics ||
@@ -281,7 +295,7 @@ class PlayBar extends Component {
 
               <div id="bar-comment">
                 <MyIcon type="icon-pinglundianjizhuang" className="bar-icon bar-icon-comment" />
-                <p id="bar-comment-num">999+</p>
+                <p id="bar-comment-num">{this.state.commentCount}</p>
               </div>
             </>
           )}
