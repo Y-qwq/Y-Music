@@ -77,13 +77,15 @@ export class MusicDetail extends Component {
   // 进度条按下时
   handleClickDown = e => {
     e.stopPropagation();
-    this.barLeft = this.barRef.current.getBoundingClientRect().left;
-    this.setState({
-      barLeft: this.barRef.current.getBoundingClientRect().left
-    });
-    this.moving = true;
-    const curTimeBarWidth = (e.clientX - this.barLeft) * this.scale;
-    this.setState({ curTimeBarWidth });
+    if (/^.*?\.(mp3|wav|flac|ape|aac|ogg)$/.test(this.props.songData.url)) {
+      this.barLeft = this.barRef.current.getBoundingClientRect().left;
+      this.setState({
+        barLeft: this.barRef.current.getBoundingClientRect().left
+      });
+      this.moving = true;
+      const curTimeBarWidth = (e.clientX - this.barLeft) * this.scale;
+      this.setState({ curTimeBarWidth });
+    }
   };
   // 移动进度条时
   handleClickMove = e => {
@@ -326,6 +328,7 @@ const mapStateToProps = state => {
     curTrack,
     lrc: state.playInfo.lrc,
     isFM: state.playInfo.isFM,
+    songData: state.playInfo.songData,
     curTime: Math.floor(state.playInfo.currentTime * 1000)
   };
 };

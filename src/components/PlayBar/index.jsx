@@ -125,7 +125,10 @@ class PlayBar extends Component {
 
       // 没有版权，全局提示
       if (this.props.songData.url === null) {
-        message.error("( •̥́ ˍ •̀ू ) 亲，没有版权呢！");
+        message.error("( •̥́ ˍ •̀ू ) 亲，不是会员或没有版权呢！");
+        if (this.props.playInfo.playState) {
+          this.props.onChangePlayState(false);
+        }
       }
     }
 
