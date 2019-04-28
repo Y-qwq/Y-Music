@@ -99,7 +99,9 @@ export default Form.create({ name: "login" })(
                 })(
                   <Input
                     autoFocus
-                    prefix={<MyIcon type="icon-xinfeng" style={{ color: "rgba(0,0,0,.25)" }} />}
+                    prefix={
+                      <MyIcon type="icon-xinfeng" style={{ color: "#CFCFCF", marginTop: 4 }} />
+                    }
                     placeholder="Email"
                   />
                 )}
