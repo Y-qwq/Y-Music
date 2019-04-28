@@ -45,7 +45,6 @@ export class MusicDetail extends Component {
 
   componentDidMount() {
     if (this.props.location.pathname === "/FM") this.scale = 1 / 0.9;
-    this.lrcScrollRef.current.onwheel = this.handleWheeling;
     window.addEventListener("resize", this.handleChangeSize);
     window.addEventListener("mousemove", this.handleClickMove);
     window.addEventListener("mouseup", this.handleClickUp);
@@ -62,6 +61,11 @@ export class MusicDetail extends Component {
   }
 
   componentDidUpdate(preProps, preState) {
+    // 有歌词时添加歌词鼠标滚动监听
+    if (this.props.lrc.length > 0 && preProps.lrc.length === 0) {
+      this.lrcScrollRef.current.onwheel = this.handleWheeling;
+    }
+
     // 时间变化检测是否歌词移动
     if (this.props.curTime !== preProps.curTime) {
       this.handleCheckLrc(this.props.curTime);
