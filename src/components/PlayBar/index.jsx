@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { Icon, Popover, Slider, message } from "antd";
+
 import MyIcon from "../../assets/MyIcon";
+import { getComment } from "../../util/api";
+import { timeConversion, download } from "../../util/util";
 import {
   onToggleSong,
   changePlayState,
@@ -14,9 +18,6 @@ import {
   getFM
 } from "../../redux/actionCreator";
 import "./index.scss";
-import { timeConversion, download } from "../../util/util";
-import { withRouter } from "react-router-dom";
-import { getComment } from "../../util/api";
 
 class PlayBar extends Component {
   constructor(props) {

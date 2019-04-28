@@ -2,15 +2,17 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Avatar, Icon, AutoComplete } from "antd";
-import MyIcon from "../../assets/MyIcon";
-import { login, logout, isLoading, insertSongToPlay } from "../../redux/actionCreator";
-import Login from "../Login";
-import $db from "../../data";
 import { easeExpInOut } from "d3-ease";
 import { Animate } from "react-move";
-import "./index.scss";
+
+import $db from "../../data";
+
+import MyIcon from "../../assets/MyIcon";
 import { debounce } from "../../util/util";
 import { getSuggest, getSongDetail } from "../../util/api";
+import { login, logout, isLoading, insertSongToPlay } from "../../redux/actionCreator";
+import Login from "../Login";
+import "./index.scss";
 
 const { remote } = window.require("electron");
 const currentWindow = remote.getCurrentWindow();

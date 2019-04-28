@@ -5,16 +5,16 @@ import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import logger from "redux-logger";
 
-import "./App.scss";
 
 import reducers from "../../redux";
 import Header from "../Header";
 import LeftNav from "../Main/LeftNav";
+import PlayList from "../Main/PlayList";
 import PlayBar from "../PlayBar";
 import Search from "../Search";
-import PlayList from "../Main/PlayList";
 import MusicDetail from "../MusicDetail";
 import PlayListDetail from "../PlayListDetail";
+import "./App.scss";
 
 const store = createStore(reducers, applyMiddleware(thunk, logger));
 

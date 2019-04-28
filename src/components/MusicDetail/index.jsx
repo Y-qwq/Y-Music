@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import "./index.scss";
+import { easeCubicOut } from "d3-ease";
+import { Animate } from "react-move";
+
 import MyIcon from "../../assets/MyIcon.js";
 import { currentTime } from "../../redux/actionCreator";
-import { Animate } from "react-move";
-import { easeCubicOut } from "d3-ease";
 import { timeConversion, download } from "../../util/util";
+import "./index.scss";
 
 // 进度条宽度
 const MAX_BAR_WIDTH = 520;

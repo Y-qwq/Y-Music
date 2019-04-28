@@ -1,6 +1,13 @@
 import React, { Component } from "react";
-import MyIcon from "../../../assets/MyIcon";
 import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+import { Popover, message } from "antd";
+import { easeExpInOut } from "d3-ease";
+import { Animate } from "react-move";
+
+import MyIcon from "../../../assets/MyIcon";
+import titlePng from "../../../assets/image/title.png";
+import { getPlayListCategory } from "../../../util/api";
 import {
   getPersonalizedList,
   getCategoryPlayList,
@@ -8,14 +15,8 @@ import {
   getoneLyric,
   getFM
 } from "../../../redux/actionCreator";
-import { Link, withRouter } from "react-router-dom";
-import { Popover, message } from "antd";
-import titlePng from "../../../assets/image/title.png";
 import "./index.scss";
-import { getPlayListCategory } from "../../../util/api";
 
-import { easeExpInOut } from "d3-ease";
-import { Animate } from "react-move";
 
 class LeftNav extends Component {
   constructor(props) {

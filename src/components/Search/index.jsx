@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import { Menu, Spin, Icon, Empty } from "antd";
+
+import { debounce } from "../../util/util";
 import { getSearch } from "../../util/api";
 import SongList from "../SongList";
-import { Menu, Spin, Icon, Empty } from "antd";
 import "./index.scss";
-import { debounce } from "../../util/util";
 
 export default class Search extends Component {
   constructor(props) {

@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import MyIcon from "../../../assets/MyIcon";
 import { connect } from "react-redux";
+
+import MyIcon from "../../../assets/MyIcon";
+import { debounce } from "../../../util/util";
 import { getOnePlayListDetail, setOffset, getCategoryPlayList } from "../../../redux/actionCreator";
 import "./index.scss";
-import { debounce } from "../../../util/util";
 
 class PlayList extends Component {
   constructor(props) {

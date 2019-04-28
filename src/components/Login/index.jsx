@@ -1,9 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import { Button, Modal, Form, Input, Checkbox, Icon } from "antd";
+
+import $db from "../../data";
+
 import MyIcon from "../../assets/MyIcon";
 import "./index.scss";
-import $db from "../../data";
 
 export default Form.create({ name: "login" })(
   // eslint-disable-next-line

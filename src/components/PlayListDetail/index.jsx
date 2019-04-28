@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Icon } from "antd";
+
 import {
   getPlayListDetail,
   setPlaylistSubscribe,
@@ -7,13 +9,12 @@ import {
   getAlbum,
   getArtist
 } from "../../util/api.js";
-import { PlayAll, Collected, Collect } from "../Button";
-import SongList from "../SongList";
-import { Icon } from "antd";
 import MyIcon from "../../assets/MyIcon";
-import "./index.scss";
 import { playAll, onToggleSong, addPlayAll, getuerList } from "../../redux/actionCreator";
 import { download } from "../../util/util.js";
+import { PlayAll, Collected, Collect } from "../Button";
+import SongList from "../SongList";
+import "./index.scss";
 
 class PlayListDetail extends Component {
   constructor(props) {
