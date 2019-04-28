@@ -213,6 +213,10 @@ export class MusicDetail extends Component {
     download(url, name);
   };
 
+  handleClickArtist = id => {
+    this.props.history.push(`/playlistdetail/artist/${id}`);
+  };
+
   render() {
     const { curTrack, curTime, lrc } = this.props;
     if (curTrack) {
@@ -221,7 +225,7 @@ export class MusicDetail extends Component {
 
       let singers = [];
       const ar = curTrack.ar ? "ar" : "artists";
-      curTrack[ar].map(one => singers.push(one.name));
+      curTrack[ar].map(one => singers.push([one.id, one.name]));
 
       return (
         <Animate
@@ -263,7 +267,21 @@ export class MusicDetail extends Component {
                 >
                   <div className="left-song-info">
                     <h1>{curTrack.name}</h1>
-                    <p className="song-artists">{singers.join(" / ")}</p>
+                    <div className="song-artists">
+                      {singers.map((ar, idx) => {
+                        return (
+                          <span key={"ar" + idx}>
+                            <p
+                              className="song-one-artist"
+                              onClick={this.handleClickArtist.bind(this, ar[0])}
+                            >
+                              {ar[1]}
+                            </p>
+                            <p>{singers.length - 1 !== idx && " / "}</p>
+                          </span>
+                        );
+                      })}
+                    </div>
                     <article className="song-lyrics" ref={this.lrcScrollRef}>
                       <div className="lyrics-context">
                         {lrc.length > 0 ? (
