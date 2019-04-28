@@ -9,7 +9,7 @@ import {
   getFM
 } from "../../../redux/actionCreator";
 import { Link, withRouter } from "react-router-dom";
-import { Popover } from "antd";
+import { Popover, message } from "antd";
 import titlePng from "../../../assets/image/title.png";
 import "./index.scss";
 import { getPlayListCategory } from "../../../util/api";
@@ -21,26 +21,45 @@ class LeftNav extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      navSelect: 1,
       sub: [], // 标签
       curSub: "", // 当前标签
       subVisible: false
     };
   }
   onHandleNavSelect = num => {
-    if (num === 1 && this.state.navSelect === 1) {
-      this.props.delCategoryPlayList();
-      this.setState({
-        curSub: ""
-      });
-    } else {
-      this.setState({
-        navSelect: num
-      });
-    }
+    switch (num) {
+      case 1:
+        this.props.history.push("/find");
+        // 二次点击，标签恢复成日推标签
+        if (this.props.location.pathname === "/find") {
+          this.props.delCategoryPlayList();
+          this.setState({
+            curSub: ""
+          });
+        }
+        break;
 
-    if (num === 2 && !this.props.isFM) {
-      this.props.onGetFM();
+      case 2:
+        if (this.props.isLogged) {
+          this.props.history.push("/FM");
+          if (!this.props.isFM) {
+            this.props.onGetFM();
+          }
+        } else {
+          message.warn("私人FM 需要登录才能获取数据！");
+        }
+        break;
+
+      case 3:
+        if (this.props.isLogged) {
+          this.props.history.push("/collect");
+        } else {
+          message.warn("个人歌单 需要登录才能获取数据！");
+        }
+        break;
+
+      default:
+        break;
     }
   };
 
@@ -63,36 +82,14 @@ class LeftNav extends Component {
     this.props.getPersonalizedPlayList();
 
     // 获取分类标签
-    try {
-      let res = await getPlayListCategory();
-      if (res.data.code === 200) {
-        this.setState({
-          sub: res.data.sub,
-          categories: res.data.categories
-        });
-      }
-    } catch (err) {
-      console.log(err && err.response && err.response.data && err.response.data.msg);
+    let res = await getPlayListCategory();
+    if (res.data.code === 200) {
+      this.setState({
+        sub: res.data.sub,
+        categories: res.data.categories
+      });
     }
   };
-
-  componentDidUpdate(preProps) {
-    if (this.props.location.pathname !== preProps.location.pathname) {
-      let navSelect = 1;
-      switch (this.props.location.pathname) {
-        case "/FM":
-          navSelect = 2;
-          break;
-        case "/collect":
-          navSelect = 3;
-          break;
-        default:
-          navSelect = 1;
-          break;
-      }
-      this.setState({ navSelect });
-    }
-  }
 
   renderSub = () => {
     const cat = ["语种", "风格", "场景", "情感", "主题"];
@@ -171,15 +168,13 @@ class LeftNav extends Component {
                 transform: `translateX(${x}px)`
               }}
             >
-              <Link to="/find" id="nav-title-link" draggable="false">
-                <img
-                  src={titlePng}
-                  alt=""
-                  id="nav-title"
-                  onClick={this.onHandleNavSelect.bind(this, 1)}
-                  draggable="false"
-                />
-              </Link>
+              <img
+                src={titlePng}
+                alt=""
+                id="nav-title"
+                onClick={this.onHandleNavSelect.bind(this, 1)}
+                draggable="false"
+              />
               <div id="nav-menu">
                 <Popover
                   placement="right"
@@ -189,33 +184,24 @@ class LeftNav extends Component {
                   visible={this.state.subVisible}
                   onVisibleChange={this.handleVisibleChange}
                 >
-                  <Link to="/find" className="nav-link" draggable="false">
-                    <MyIcon
-                      type="icon-faxian"
-                      className={["nav-icon", pathname === "/find" && "nav-select"]}
-                      onClick={this.onHandleNavSelect.bind(this, 1)}
-                    />
-                  </Link>
+                  <MyIcon
+                    type="icon-faxian"
+                    className={["nav-icon", pathname === "/find" && "nav-select"]}
+                    onClick={this.onHandleNavSelect.bind(this, 1)}
+                  />
                 </Popover>
-                <Link
-                  to={"/FM"}
-                  className="nav-link"
-                  draggable="false"
-                  onClick={this.onHandleNavSelect.bind(this, 2)}
-                >
-                  <MyIcon
-                    type="icon-diantai"
-                    className={["nav-icon", pathname === "/FM" && "nav-select"]}
-                  />
-                </Link>
 
-                <Link to="/collect" className="nav-link" draggable="false">
-                  <MyIcon
-                    type="icon-shoucang"
-                    className={["nav-icon", pathname === "/collect" && "nav-select"]}
-                    onClick={this.onHandleNavSelect.bind(this, 3)}
-                  />
-                </Link>
+                <MyIcon
+                  type="icon-diantai"
+                  onClick={this.onHandleNavSelect.bind(this, 2)}
+                  className={["nav-icon", pathname === "/FM" && "nav-select"]}
+                />
+
+                <MyIcon
+                  type="icon-shoucang"
+                  className={["nav-icon", pathname === "/collect" && "nav-select"]}
+                  onClick={this.onHandleNavSelect.bind(this, 3)}
+                />
               </div>
               <div className="nav-img-box">
                 <div
@@ -248,9 +234,8 @@ class LeftNav extends Component {
 }
 
 const mapStateToProps = state => {
-  const tracks = state.playInfo.tracks;
   const curIndex = state.playInfo.currentIndex;
-  const curTrack = tracks.length > 0 && tracks[curIndex];
+  const curTrack = state.playInfo.tracks[curIndex];
 
   let curUrl = null;
   if (curTrack && curTrack.al && curTrack.al.picUrl) {
@@ -262,7 +247,8 @@ const mapStateToProps = state => {
   return {
     curTrack,
     curUrl,
-    isFM: state.playInfo.isFM
+    isFM: state.playInfo.isFM,
+    isLogged: state.user.isLogged
   };
 };
 

@@ -1,4 +1,5 @@
 @import '../../App/base.scss';
+
 #main-nav {
     grid-column: 1;
     grid-row: 1/4;
@@ -14,16 +15,17 @@
     z-index: 99;
     padding-top: 25px;
 
-    .nav-link {
-        margin-bottom: 50px;
-    }
-
     #nav-title {
         display: block;
         width: 55px;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     .nav-icon {
+        margin-bottom: 50px;
         font-size: 30px;
     }
 
@@ -32,7 +34,6 @@
     }
 
     #nav-menu {
-        // background-color: seagreen;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -42,16 +43,23 @@
 
     }
 
-    .nav-img-box{
+    .nav-img-box {
         width: 65px;
         height: 65px;
         margin-bottom: 102px;
     }
+
     @keyframes bgc {
-        0%{background-color: #fff;}
-        100%{background-color: #6A6A6A;}
-        
+        0% {
+            background-color: #fff;
+        }
+
+        100% {
+            background-color: #6A6A6A;
+        }
+
     }
+
     .nav-cover {
         width: 65px;
         height: 65px;
