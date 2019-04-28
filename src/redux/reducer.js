@@ -53,7 +53,7 @@ export function user(state = userInitialState, action) {
                 loginFailedMsg: '',
                 loading: false
             }
-            
+
         case LOADING:
             return {
                 ...state,
@@ -306,6 +306,7 @@ export function playList(state = playListInitialState, action) {
                 ...state,
                 userCollectList: [],
                 userPlayList: [],
+                recommendList: []
             }
 
 

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Icon } from "antd";
+import { Icon, Spin } from "antd";
 
 import {
   getPlayListDetail,
@@ -25,7 +25,8 @@ class PlayListDetail extends Component {
       showDescription: false, //是否显示简介
       artistsName: "ar", // 歌手的变量名
       albumName: "al", // 专辑变量名
-      coverImgUrl: ""
+      coverImgUrl: "",
+      renderFlag: false
     };
     this.contentRef = React.createRef();
   }
@@ -45,27 +46,29 @@ class PlayListDetail extends Component {
     this.contentRef = null;
   }
 
-  switchType = () => {
+  switchType = async () => {
+    this.setState({ renderFlag: true });
     const {
       match: {
         params: { id, type }
       }
     } = this.props;
     if (type === "album") {
-      this.handleGetAlbumsSonogs(id);
+      await this.handleGetAlbumsSonogs(id);
     }
     if (type === "artist") {
-      this.handleGetArtistInfo(id);
+      await this.handleGetArtistInfo(id);
     }
     if (type === "playlist") {
       if (id === "0") {
         // 获取日推歌单
-        this.handleGetRecommendSongs();
+        await this.handleGetRecommendSongs();
       } else {
         // 获取普通歌单
-        this.handleGetPlayListDetail(id);
+        await this.handleGetPlayListDetail(id);
       }
     }
+    this.setState({ renderFlag: false });
   };
 
   // 获取日推歌曲
@@ -171,78 +174,80 @@ class PlayListDetail extends Component {
     const { onPlayAll, match, location, isLogged, userId } = this.props;
     return (
       <div className="list-detail" ref={this.contentRef}>
-        <div className="list-info">
-          <img src={coverImgUrl} alt="" draggable={false} className="list-pic" />
-          <MyIcon
-            type="icon-xiangji_"
-            className="download-cover"
-            onClick={this.handleDownloadCover.bind(this, coverImgUrl, detail.name)}
-          />
-          <div className="list-description">
-            <h1>{detail.name}</h1>
-            <div className="list-buttons">
-              <PlayAll
-                fontSize="16px"
-                onClickPlayAll={() => {
-                  onPlayAll(detail.tracks);
-                }}
-                onClickAddPlayAll={this.handleAddPlayAll}
-              />
-              {match.params.id !== "0" && !location.state && isLogged ? (
-                detail.subscribed ? (
-                  <Collected
-                    num={detail.subscribedCount}
-                    onClickToggle={this.handleToggleCollect}
-                    disabled={userId === createrId}
-                  />
-                ) : (
-                  <Collect
-                    num={detail.subscribedCount}
-                    onClickToggle={this.handleToggleCollect}
-                    disabled={userId === createrId}
-                  />
-                )
-              ) : (
-                ""
-              )}
-              {/* <DownloadAll /> */}
-            </div>
-            <p className="list-count">
-              歌曲数：
-              {detail.tracks.length}
-            </p>
-            {detail.tags && detail.tags.length > 0 && (
-              <p className="list-tags">标签：{detail.tags.join("/")}</p>
-            )}
-            {detail.description && (
-              <>
-                <p
-                  className={
-                    showDescription
-                      ? "list-description-detail-show"
-                      : "list-description-detail-unshow"
-                  }
-                >
-                  简介：{detail.description}
-                </p>
-                <Icon
-                  type="down"
-                  className={`list-description-more ${showDescription &&
-                    "list-description-more-true"}`}
-                  onClick={this.handleShowDescription}
+        <Spin spinning={this.state.renderFlag} size="large">
+          <div className="list-info">
+            <img src={coverImgUrl} alt="" draggable={false} className="list-pic" />
+            <MyIcon
+              type="icon-xiangji_"
+              className="download-cover"
+              onClick={this.handleDownloadCover.bind(this, coverImgUrl, detail.name)}
+            />
+            <div className="list-description">
+              <h1>{detail.name}</h1>
+              <div className="list-buttons">
+                <PlayAll
+                  fontSize="16px"
+                  onClickPlayAll={() => {
+                    onPlayAll(detail.tracks);
+                  }}
+                  onClickAddPlayAll={this.handleAddPlayAll}
                 />
-              </>
-            )}
+                {match.params.id !== "0" && !location.state && isLogged ? (
+                  detail.subscribed ? (
+                    <Collected
+                      num={detail.subscribedCount}
+                      onClickToggle={this.handleToggleCollect}
+                      disabled={userId === createrId}
+                    />
+                  ) : (
+                    <Collect
+                      num={detail.subscribedCount}
+                      onClickToggle={this.handleToggleCollect}
+                      disabled={userId === createrId}
+                    />
+                  )
+                ) : (
+                  ""
+                )}
+                {/* <DownloadAll /> */}
+              </div>
+              <p className="list-count">
+                歌曲数：
+                {detail.tracks.length}
+              </p>
+              {detail.tags && detail.tags.length > 0 && (
+                <p className="list-tags">标签：{detail.tags.join("/")}</p>
+              )}
+              {detail.description && (
+                <>
+                  <p
+                    className={
+                      showDescription
+                        ? "list-description-detail-show"
+                        : "list-description-detail-unshow"
+                    }
+                  >
+                    简介：{detail.description}
+                  </p>
+                  <Icon
+                    type="down"
+                    className={`list-description-more ${showDescription &&
+                      "list-description-more-true"}`}
+                    onClick={this.handleShowDescription}
+                  />
+                </>
+              )}
+            </div>
           </div>
-        </div>
-        {Object.keys(detail).length !== 0 && (
-          <SongList
-            playlist={detail}
-            artistsName={artistsName}
-            albumName={albumName}
-            changeCount={count => this.handleChangeCount(count)}
-          />
-        )}
+          {Object.keys(detail).length !== 0 && (
+            <SongList
+              playlist={detail}
+              artistsName={artistsName}
+              albumName={albumName}
+              changeCount={count => this.handleChangeCount(count)}
+            />
+          )}
+        </Spin>
       </div>
     );
   }
