@@ -140,6 +140,7 @@ class Header extends Component {
   handleKeyDown = e => {
     if (e.keyCode === 13) {
       this.search();
+      e.target.blur();
     }
   };
 
