@@ -41,6 +41,17 @@ class Header extends Component {
   }
 
   componentDidMount() {
+    // 关闭搜索
+    document.body.onclick = e => {
+      if (
+        e.target.tagName !== "svg" &&
+        e.target.tagName !== "path" &&
+        e.target.id !== "header-search-text"
+      ) {
+        this.setState({ showBar: false });
+      }
+    };
+
     // 监听是否双击放大or恢复
     currentWindow.on("maximize", () => {
       this.setState({
@@ -62,11 +73,6 @@ class Header extends Component {
         this.props.onLogin(doc.account, doc.password, doc.loginType, true, doc.lastTime);
       }
     });
-  }
-
-  componentWillUnmount() {
-    this.formRef = null;
-    this.mouseUp = null;
   }
 
   // 最小化
@@ -260,7 +266,7 @@ class Header extends Component {
                   >
                     <input
                       id="header-search-text"
-                      className={this.state.showBar ? "" : "none"}
+                      className={this.state.showBar ? "show-text" : "unshow-text"}
                       onKeyDown={this.handleKeyDown.bind(this)}
                     />
                   </AutoComplete>

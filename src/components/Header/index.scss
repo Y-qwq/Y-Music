@@ -96,25 +96,12 @@ $light-grey:rgb(201, 191, 175);
 
         }
 
-        @keyframes header-text {
-            0% {
-                width: 0;
-            }
-
-            100% {
-                width: 190px;
-            }
-        }
-
         .ant-select-selection {
             background-color: rgba($color: #fff, $alpha: 0);
         }
 
-
-
         #header-search-text {
             -webkit-app-region: no-drag;
-            width: 220px;
             background: none;
             height: 20px;
             border-radius: 0;
@@ -124,12 +111,20 @@ $light-grey:rgb(201, 191, 175);
             border-right: 0px;
             outline: medium;
             margin-right: 10px;
-            animation: header-text linear 0.3s;
+            transition: all 0.3 linear;
+        }
+
+        .show-text {
+            width: 220px;
+        }
+
+        .unshow-text {
+            width: 0;
         }
 
 
     }
-    
+
 }
 
 .ant-select-dropdown-menu {
