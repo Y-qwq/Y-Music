@@ -30,7 +30,7 @@ class App extends Component {
 
             <Switch>
               <Route path='/search/:type/:keywords' component={Search} />
-              <Route path="/(musicdetail|search)" component={MusicDetail} />
+              <Route path="/(musicdetail|FM)" component={MusicDetail} />
               <Route exact path="/:type(find|collect)" component={PlayList} />
               <Route path="/playlistdetail/:type/:id" component={PlayListDetail} />
               <Redirect from="*" to="/find" />
