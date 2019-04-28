@@ -60,6 +60,13 @@ export class MusicDetail extends Component {
     window.removeEventListener("mouseup", this.handleClickUp);
   }
 
+  componentDidUpdate(preProps) {
+    // 判断是否滚动歌词
+    if (this.props.curTime !== preProps.curTime) {
+      this.handleCheckLrc(this.props.curTime);
+    }
+  }
+
   // 改变尺寸时调整位置
   handleChangeSize = () => {
     this.setState({
@@ -105,8 +112,29 @@ export class MusicDetail extends Component {
       e.stopPropagation();
       this.moving = false;
       this.props.onGotoTime(this.widthToTime(), true);
+
+      this.handleCheckLrc(this.widthToTime());
     }
   };
+
+  // 检测歌词是否需要跳转
+  handleCheckLrc = (curTime) => {
+    let curLineIndex = -1;
+      const {  lrc } = this.props;
+      for (const index of lrc.keys()) {
+        if (curTime / 1000 - 0.1 < lrc[index][0]) {
+          curLineIndex = index === 0 ? 0 : index - 1;
+          break;
+        }
+      }
+      if (curLineIndex === -1) curLineIndex = lrc.length - 1;
+
+      // 滚动歌词
+      if (!this.scrolling) {
+        this.handleEasing();
+      }
+      this.setState({ curLineIndex: curLineIndex });
+  }
 
   // 当前宽度转化为时间 单位:s
   widthToTime = () => {
@@ -185,28 +213,6 @@ export class MusicDetail extends Component {
     download(url, name);
   };
 
-  componentDidUpdate(preProps, preState) {
-    // 判断是否滚动歌词
-    if (this.props.curTime !== preProps.curTime) {
-      let curLineIndex = -1;
-      const { curTime, lrc } = this.props;
-      for (const index of lrc.keys()) {
-        if (curTime / 1000 - 0.1 < lrc[index][0]) {
-          curLineIndex = index === 0 ? 0 : index - 1;
-          break;
-        }
-      }
-      if (curLineIndex === -1) curLineIndex = lrc.length - 1;
-
-      // 滚动歌词
-      if (preState.curLineIndex !== curLineIndex) {
-        if (!this.scrolling) {
-          this.handleEasing();
-        }
-        this.setState({ curLineIndex: curLineIndex });
-      }
-    }
-  }
 
   render() {
     const { curTrack, curTime, lrc } = this.props;
