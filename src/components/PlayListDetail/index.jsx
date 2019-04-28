@@ -171,7 +171,7 @@ class PlayListDetail extends Component {
 
   render() {
     const { showDescription, detail, artistsName, albumName, coverImgUrl, createrId } = this.state;
-    const { onPlayAll, match, location, isLogged, userId } = this.props;
+    const { onPlayAll, match, isLogged, userId } = this.props;
     return (
       <div className="list-detail" ref={this.contentRef}>
         <Spin spinning={this.state.renderFlag} size="large">
@@ -192,7 +192,7 @@ class PlayListDetail extends Component {
                   }}
                   onClickAddPlayAll={this.handleAddPlayAll}
                 />
-                {match.params.id !== "0" && !location.state && isLogged ? (
+                {match.params.id !== "0" && match.params.type === "playlist" && isLogged ? (
                   detail.subscribed ? (
                     <Collected
                       num={detail.subscribedCount}
