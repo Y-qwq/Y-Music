@@ -32,7 +32,7 @@ export class MusicDetail extends Component {
 
     // flag
     this.moving = false;
-    this.scrolling = false;
+    this.wheeling = false;
     this.barLeft = 0;
 
     // 1 / scale缩小的值,用于解决缩小后拖动进度条不准问题
@@ -45,6 +45,7 @@ export class MusicDetail extends Component {
 
   componentDidMount() {
     if (this.props.location.pathname === "/FM") this.scale = 1 / 0.9;
+    this.lrcScrollRef.current.onwheel = this.handleWheeling;
     window.addEventListener("resize", this.handleChangeSize);
     window.addEventListener("mousemove", this.handleClickMove);
     window.addEventListener("mouseup", this.handleClickUp);
@@ -60,10 +61,15 @@ export class MusicDetail extends Component {
     window.removeEventListener("mouseup", this.handleClickUp);
   }
 
-  componentDidUpdate(preProps) {
-    // 判断是否滚动歌词
+  componentDidUpdate(preProps, preState) {
+    // 时间变化检测是否歌词移动
     if (this.props.curTime !== preProps.curTime) {
       this.handleCheckLrc(this.props.curTime);
+    }
+
+    // 滚动歌词
+    if (!this.wheeling && preState.curLineIndex !== this.state.curLineIndex) {
+      this.handleEasing();
     }
   }
 
@@ -113,7 +119,7 @@ export class MusicDetail extends Component {
       this.moving = false;
       this.props.onGotoTime(this.widthToTime(), true);
 
-      this.handleCheckLrc(this.widthToTime());
+      this.handleCheckLrc(this.widthToTime() * 1000);
     }
   };
 
@@ -129,11 +135,7 @@ export class MusicDetail extends Component {
     }
     if (curLineIndex === -1) curLineIndex = lrc.length - 1;
 
-    // 滚动歌词
-    if (!this.scrolling) {
-      this.handleEasing();
-    }
-    this.setState({ curLineIndex: curLineIndex });
+    this.setState({ curLineIndex });
   };
 
   // 当前宽度转化为时间 单位:s
@@ -149,7 +151,7 @@ export class MusicDetail extends Component {
       // 获取目标元素 相对父元素top
       const next = document.getElementsByClassName("song-line-next")[0];
       // 移动到相对歌词框顶部位置
-      const targetTop = next && next.offsetTop - 160;
+      const targetTop = next ? next.offsetTop - 160 : 99999;
       const curScrollTop = this.lrcScrollRef.current.scrollTop;
       const diff = targetTop - curScrollTop;
 
@@ -193,11 +195,11 @@ export class MusicDetail extends Component {
   };
 
   // 手动滚动歌词中，取消歌词缓动效果
-  handleScrolling = () => {
-    this.scrolling = true;
+  handleWheeling = () => {
+    this.wheeling = true;
     clearTimeout(this.scrollingTimer);
     this.scrollingTimer = setTimeout(() => {
-      this.scrolling = false;
+      this.wheeling = false;
       clearTimeout(this.scrollingTimer);
     }, 2000);
   };
@@ -262,11 +264,7 @@ export class MusicDetail extends Component {
                   <div className="left-song-info">
                     <h1>{curTrack.name}</h1>
                     <p className="song-artists">{singers.join(" / ")}</p>
-                    <article
-                      className="song-lyrics"
-                      ref={this.lrcScrollRef}
-                      onScroll={this.handleScrolling}
-                    >
+                    <article className="song-lyrics" ref={this.lrcScrollRef}>
                       <div className="lyrics-context">
                         {lrc.length > 0 ? (
                           this.renderLrc()
