@@ -6,6 +6,8 @@ $light-grey:rgb(201, 191, 175);
     grid-column: 1/3;
     grid-row: 1;
     width: 100%;
+
+    overflow: hidden;
 }
 
 .none {
@@ -109,7 +111,6 @@ $light-grey:rgb(201, 191, 175);
             border-top: 0px;
             border-left: 0px;
             border-right: 0px;
-            outline: medium;
             margin-right: 10px;
             transition: all 0.3 linear;
         }
