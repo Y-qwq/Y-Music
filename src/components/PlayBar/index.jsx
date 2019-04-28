@@ -272,7 +272,7 @@ class PlayBar extends Component {
         <div id="bar-left" style={{ width: !isLogged || curIndex < 0 ? "95px" : "190px" }}>
           <div
             className={`bar-lyrices ${this.state.isShowLyrics ? "bar-show-lyrices" : ""}`}
-            onClick={this.handleToggleShow}
+            onClick={()=>{this.handleToggleShow();message.info("_(:з」∠)_ 该功能尚未完善！");}}
           >
             词
           </div>
@@ -294,7 +294,7 @@ class PlayBar extends Component {
                 }}
               />
 
-              <div id="bar-comment">
+              <div id="bar-comment" onClick={()=>{message.info("_(:з」∠)_ 该功能尚未完善！")}}>
                 <MyIcon type="icon-pinglundianjizhuang" className="bar-icon bar-icon-comment" />
                 <p id="bar-comment-num">{this.state.commentCount}</p>
               </div>

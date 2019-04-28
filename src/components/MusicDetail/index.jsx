@@ -118,23 +118,23 @@ export class MusicDetail extends Component {
   };
 
   // 检测歌词是否需要跳转
-  handleCheckLrc = (curTime) => {
+  handleCheckLrc = curTime => {
     let curLineIndex = -1;
-      const {  lrc } = this.props;
-      for (const index of lrc.keys()) {
-        if (curTime / 1000 - 0.1 < lrc[index][0]) {
-          curLineIndex = index === 0 ? 0 : index - 1;
-          break;
-        }
+    const { lrc } = this.props;
+    for (const index of lrc.keys()) {
+      if (curTime / 1000 - 0.1 < lrc[index][0]) {
+        curLineIndex = index === 0 ? 0 : index - 1;
+        break;
       }
-      if (curLineIndex === -1) curLineIndex = lrc.length - 1;
+    }
+    if (curLineIndex === -1) curLineIndex = lrc.length - 1;
 
-      // 滚动歌词
-      if (!this.scrolling) {
-        this.handleEasing();
-      }
-      this.setState({ curLineIndex: curLineIndex });
-  }
+    // 滚动歌词
+    if (!this.scrolling) {
+      this.handleEasing();
+    }
+    this.setState({ curLineIndex: curLineIndex });
+  };
 
   // 当前宽度转化为时间 单位:s
   widthToTime = () => {
@@ -145,31 +145,29 @@ export class MusicDetail extends Component {
   // 歌词缓动
   handleEasing = () => {
     clearTimeout(this.easiingTimer);
-    // 获取目标元素 相对父元素top
-    const next = document.getElementsByClassName("song-line-next")[0];
-    // 移动到相对歌词框顶部130px的位置
-    const targetTop = next && next.offsetTop - 130;
-    const curScrollTop = this.lrcScrollRef.current.scrollTop;
-    const diff = targetTop - curScrollTop;
+    if (this.lrcScrollRef.current) {
+      // 获取目标元素 相对父元素top
+      const next = document.getElementsByClassName("song-line-next")[0];
+      // 移动到相对歌词框顶部位置
+      const targetTop = next && next.offsetTop - 160;
+      const curScrollTop = this.lrcScrollRef.current.scrollTop;
+      const diff = targetTop - curScrollTop;
 
-    // t: 当前时间； b: 初始值；c: 变化量； d: 持续时间
-    let b = curScrollTop,
-      c = diff,
-      d = 30,
-      t = 0;
+      // t: 当前时间； b: 初始值；c: 变化量； d: 持续时间
+      let b = curScrollTop,
+        c = diff,
+        d = 30,
+        t = 0;
 
-    const run = () => {
-      if (this.lrcScrollRef) {
+      const run = () => {
         this.lrcScrollRef.current.scrollTop = b + Math.ceil(c * easeCubicOut((t += 1 / d)));
         this.easiingTimer = setTimeout(run, 1000 / 60);
         if (t >= 1) {
           clearTimeout(this.easiingTimer);
         }
-      } else {
-        clearTimeout(this.easiingTimer);
-      }
-    };
-    run();
+      };
+      run();
+    }
   };
 
   // 歌词渲染
@@ -212,7 +210,6 @@ export class MusicDetail extends Component {
     }
     download(url, name);
   };
-
 
   render() {
     const { curTrack, curTime, lrc } = this.props;
