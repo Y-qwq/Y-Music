@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import { Popover, message } from "antd";
-import { easeExpInOut } from "d3-ease";
-import { Animate } from "react-move";
 
 import MyIcon from "../../../assets/MyIcon";
 import titlePng from "../../../assets/image/title.png";
@@ -16,7 +14,6 @@ import {
   getFM
 } from "../../../redux/actionCreator";
 import "./index.scss";
-
 
 class LeftNav extends Component {
   constructor(props) {
@@ -147,89 +144,70 @@ class LeftNav extends Component {
       location: { pathname }
     } = this.props;
     return (
-      <Animate
-        show={pathname !== "/musicdetail"}
-        start={{
-          x: [-80]
-        }}
-        enter={{
-          x: [0],
-          timing: { duration: 500, ease: easeExpInOut }
-        }}
-        leave={{
-          x: [-80],
-          timing: { duration: 500, ease: easeExpInOut }
+      <nav
+        id="main-nav"
+        style={{
+          transform: `translateX(${pathname === "/musicdetail" ? -80 : 0}px)`
         }}
       >
-        {({ x }) => {
-          return (
-            <nav
-              id="main-nav"
-              style={{
-                transform: `translateX(${x}px)`
-              }}
+        <img
+          src={titlePng}
+          alt=""
+          id="nav-title"
+          onClick={this.onHandleNavSelect.bind(this, 1)}
+          draggable="false"
+        />
+        <div id="nav-menu">
+          <Popover
+            placement="right"
+            title={<h3 className="sub-title">添加标签</h3>}
+            content={this.renderSub()}
+            trigger="contextMenu"
+            visible={this.state.subVisible}
+            onVisibleChange={this.handleVisibleChange}
+          >
+            <MyIcon
+              type="icon-faxian"
+              className={["nav-icon", pathname === "/find" && "nav-select"]}
+              onClick={this.onHandleNavSelect.bind(this, 1)}
+            />
+          </Popover>
+
+          <MyIcon
+            type="icon-diantai"
+            onClick={this.onHandleNavSelect.bind(this, 2)}
+            className={["nav-icon", pathname === "/FM" && "nav-select"]}
+          />
+
+          <MyIcon
+            type="icon-shoucang"
+            className={["nav-icon", pathname === "/collect" && "nav-select"]}
+            onClick={this.onHandleNavSelect.bind(this, 3)}
+          />
+        </div>
+        <div className="nav-img-box">
+          <div
+            className="nav-cover"
+            style={{
+              display: pathname !== "/FM" && this.props.curUrl ? "block" : "none"
+            }}
+          >
+            <img
+              src={pathname !== "/FM" ? this.props.curUrl : ""}
+              alt=""
+              id="nav-song-cover"
+              draggable="false"
+            />
+            <Link
+              to={this.props.isFM ? "/FM" : "/musicdetail"}
+              draggable="false"
+              onClick={this.props.onGetLyric.bind(this)}
             >
-              <img
-                src={titlePng}
-                alt=""
-                id="nav-title"
-                onClick={this.onHandleNavSelect.bind(this, 1)}
-                draggable="false"
-              />
-              <div id="nav-menu">
-                <Popover
-                  placement="right"
-                  title={<h3 className="sub-title">添加标签</h3>}
-                  content={this.renderSub()}
-                  trigger="contextMenu"
-                  visible={this.state.subVisible}
-                  onVisibleChange={this.handleVisibleChange}
-                >
-                  <MyIcon
-                    type="icon-faxian"
-                    className={["nav-icon", pathname === "/find" && "nav-select"]}
-                    onClick={this.onHandleNavSelect.bind(this, 1)}
-                  />
-                </Popover>
-
-                <MyIcon
-                  type="icon-diantai"
-                  onClick={this.onHandleNavSelect.bind(this, 2)}
-                  className={["nav-icon", pathname === "/FM" && "nav-select"]}
-                />
-
-                <MyIcon
-                  type="icon-shoucang"
-                  className={["nav-icon", pathname === "/collect" && "nav-select"]}
-                  onClick={this.onHandleNavSelect.bind(this, 3)}
-                />
-              </div>
-              <div className="nav-img-box">
-                <div
-                  className="nav-cover"
-                  style={{
-                    display: pathname !== "/FM" && this.props.curUrl ? "block" : "none"
-                  }}
-                >
-                  <img
-                    src={pathname !== "/FM" ? this.props.curUrl : ""}
-                    alt=""
-                    id="nav-song-cover"
-                    draggable="false"
-                  />
-                  <Link
-                    to={this.props.isFM ? "/FM" : "/musicdetail"}
-                    draggable="false"
-                    onClick={this.props.onGetLyric.bind(this)}
-                  >
-                    <MyIcon type="icon-fangda" className="nav-cover-icon" />
-                  </Link>
-                </div>
-              </div>
-            </nav>
-          );
-        }}
-      </Animate>
+              <MyIcon type="icon-fangda" className="nav-cover-icon" />
+            </Link>
+          </div>
+        </div>
+      </nav>
     );
   }
 }

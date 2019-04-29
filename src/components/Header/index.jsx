@@ -2,8 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Avatar, Icon, AutoComplete } from "antd";
-import { easeExpInOut } from "d3-ease";
-import { Animate } from "react-move";
 
 import $db from "../../data";
 
@@ -218,101 +216,87 @@ class Header extends Component {
   };
 
   render() {
-    const { onLogin, userInfo, isLogged, loginFailedMsg, loading } = this.props;
+    const { onLogin, userInfo, isLogged, loginFailedMsg, loading, location } = this.props;
 
     return (
-      <Animate
-        start={{ paddingLeft: 80 }}
-        update={{
-          paddingLeft: [this.props.location.pathname !== "/musicdetail" ? 80 : 0],
-          timing: { duration: 500, ease: easeExpInOut }
-        }}
-      >
-        {({ paddingLeft }) => {
-          return (
-            <div id="header" style={{ paddingLeft }}>
-              <header id="header-header">
-                <div id="header-left">
-                  {isLogged ? (
-                    <span>
-                      <Avatar
-                        size={40}
-                        icon="user"
-                        id="header-user-icon"
-                        src={userInfo.profile.avatarUrl}
-                      />
-                      <div id="header-logged">
-                        <p id="header-username">{userInfo.profile.nickname}</p>
-                        <p id="header-logout" onClick={this.onLogout}>
-                          <MyIcon type="icon-tuichu" />
-                          &nbsp;&nbsp;Logout
-                        </p>
-                      </div>
-                    </span>
-                  ) : (
-                    <span onClick={this.showLoginModal.bind(this, true)}>
-                      <Avatar size={40} icon="user" id="header-user-icon" />
-                      <p id="unlogin">未登录</p>
-                    </span>
-                  )}
+      <div id="header" style={{ paddingLeft: location.pathname !== "/musicdetail" ? 80 : 0 }}>
+        <header id="header-header">
+          <div id="header-left">
+            {isLogged ? (
+              <span>
+                <Avatar
+                  size={40}
+                  icon="user"
+                  id="header-user-icon"
+                  src={userInfo.profile.avatarUrl}
+                />
+                <div id="header-logged">
+                  <p id="header-username">{userInfo.profile.nickname}</p>
+                  <p id="header-logout" onClick={this.onLogout}>
+                    <MyIcon type="icon-tuichu" />
+                    &nbsp;&nbsp;Logout
+                  </p>
                 </div>
+              </span>
+            ) : (
+              <span onClick={this.showLoginModal.bind(this, true)}>
+                <Avatar size={40} icon="user" id="header-user-icon" />
+                <p id="unlogin">未登录</p>
+              </span>
+            )}
+          </div>
 
-                <div id="header-right">
-                  <AutoComplete
-                    defaultActiveFirstOption={false}
-                    style={{ backgroundColor: "rgba($color: #fff, $alpha: 0)" }}
-                    dataSource={this.renderOptions()}
-                    onSelect={this.handleSelect}
-                    onSearch={this.handleAutoSearch}
-                  >
-                    <input
-                      id="header-search-text"
-                      className={this.state.showBar ? "show-text" : "unshow-text"}
-                      onKeyDown={this.handleKeyDown.bind(this)}
-                    />
-                  </AutoComplete>
-
-                  <Icon
-                    type="search"
-                    className="header-icon"
-                    id="header-search-icon"
-                    onClick={this.handleSearch}
-                  />
-
-                  <MyIcon
-                    type="icon-winfo-icon-zuixiaohua"
-                    className="header-icon"
-                    onClick={this.onHandleMinimize}
-                  />
-                  <MyIcon
-                    type={
-                      this.state.isMaximized
-                        ? "icon-zuidahua1"
-                        : "icon-winfo-icon-fuxuanweixuanzhong"
-                    }
-                    className="header-icon"
-                    onClick={this.onHandleMaximize}
-                  />
-                  <MyIcon
-                    type="icon-winfo-icon-guanbi"
-                    className="header-icon"
-                    onClick={this.onHandleClose}
-                  />
-                </div>
-              </header>
-
-              <Login
-                wrappedComponentRef={this.saveFormRef}
-                visible={this.state.loginVisible || loading} // 登陆中or登录失败不会关闭窗口
-                onCancel={this.handleLoginCancel}
-                onLogin={onLogin} // 登录api调用
-                showLoginModal={this.showLoginModal.bind(this)} // 登录窗口 开关
-                loginFailedMsg={loginFailedMsg} // 登录失败信息
+          <div id="header-right">
+            <AutoComplete
+              defaultActiveFirstOption={false}
+              style={{ backgroundColor: "rgba($color: #fff, $alpha: 0)" }}
+              dataSource={this.renderOptions()}
+              onSelect={this.handleSelect}
+              onSearch={this.handleAutoSearch}
+            >
+              <input
+                id="header-search-text"
+                className={this.state.showBar ? "show-text" : "unshow-text"}
+                onKeyDown={this.handleKeyDown.bind(this)}
               />
-            </div>
-          );
-        }}
-      </Animate>
+            </AutoComplete>
+
+            <Icon
+              type="search"
+              className="header-icon"
+              id="header-search-icon"
+              onClick={this.handleSearch}
+            />
+
+            <MyIcon
+              type="icon-winfo-icon-zuixiaohua"
+              className="header-icon"
+              onClick={this.onHandleMinimize}
+            />
+            <MyIcon
+              type={
+                this.state.isMaximized ? "icon-zuidahua1" : "icon-winfo-icon-fuxuanweixuanzhong"
+              }
+              className="header-icon"
+              onClick={this.onHandleMaximize}
+            />
+            <MyIcon
+              type="icon-winfo-icon-guanbi"
+              className="header-icon"
+              onClick={this.onHandleClose}
+            />
+          </div>
+        </header>
+
+        <Login
+          wrappedComponentRef={this.saveFormRef}
+          visible={this.state.loginVisible || loading} // 登陆中or登录失败不会关闭窗口
+          onCancel={this.handleLoginCancel}
+          onLogin={onLogin} // 登录api调用
+          showLoginModal={this.showLoginModal.bind(this)} // 登录窗口 开关
+          loginFailedMsg={loginFailedMsg} // 登录失败信息
+        />
+      </div>
     );
   }
 }
