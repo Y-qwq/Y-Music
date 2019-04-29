@@ -217,8 +217,14 @@ export class MusicDetail extends Component {
     download(url, name);
   };
 
+  // 点击歌手跳转
   handleClickArtist = id => {
     this.props.history.push(`/playlistdetail/artist/${id}`);
+  };
+
+  // 鼠标右键返回
+  handleGoBack = e => {
+    if (e.button === 2) this.props.history.goBack();
   };
 
   render() {
@@ -261,6 +267,7 @@ export class MusicDetail extends Component {
                   gridColumn: this.props.location.pathname === "/FM" ? "2" : "1/3",
                   transformOrigin: this.props.location.pathname === "/FM" ? "center" : "bottom left"
                 }}
+                onMouseDown={this.handleGoBack}
               >
                 <div
                   className="content"

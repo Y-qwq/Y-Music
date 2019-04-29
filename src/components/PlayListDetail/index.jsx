@@ -169,11 +169,16 @@ class PlayListDetail extends Component {
     download(url, name);
   };
 
+  // 鼠标右键返回
+  handleGoBack = e => {
+    if (e.button === 2) this.props.history.goBack();
+  };
+
   render() {
     const { showDescription, detail, artistsName, albumName, coverImgUrl, createrId } = this.state;
     const { onPlayAll, match, isLogged, userId } = this.props;
     return (
-      <div className="list-detail" ref={this.contentRef}>
+      <div className="list-detail" ref={this.contentRef} onMouseDown={this.handleGoBack}>
         <Spin spinning={this.state.renderFlag} size="large">
           <div className="list-info">
             <img src={coverImgUrl} alt="" draggable={false} className="list-pic" />
