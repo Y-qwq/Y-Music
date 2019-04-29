@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { Icon, Popover, Slider, message } from "antd";
+import { Icon, Popover, Slider, message, Modal } from "antd";
 
 import MyIcon from "../../assets/MyIcon";
-import { getComment } from "../../util/api";
+import { getComment, changePlayListSongs } from "../../util/api";
 import { timeConversion, download } from "../../util/util";
 import {
   onToggleSong,
@@ -15,7 +15,8 @@ import {
   playAll,
   toogeleSpecifiedSong,
   getoneLyric,
-  getFM
+  getFM,
+  getuerList
 } from "../../redux/actionCreator";
 import "./index.scss";
 
@@ -24,13 +25,16 @@ class PlayBar extends Component {
     super(props);
     this.state = {
       isShowLyrics: false,
-      volume: 100,
       playListVisible: false,
-      commentCount: 0
+      collectVisible: false,
+      modeVisble: false,
+      commentCount: 0,
+      volume: 100
     };
     this.audioRef = React.createRef();
   }
 
+  // 更新当前播放时间
   handleTimeUpdate = e => {
     if (this.props.location.pathname === "/musicdetail" || this.props.location.pathname === "/FM") {
       this.props.onSetCurrentTime(e.currentTarget.currentTime);
@@ -49,6 +53,7 @@ class PlayBar extends Component {
     }
   };
 
+  // 歌词显示切换按钮
   handleToggleShow = () => {
     const isShowLyrics = !this.state.isShowLyrics;
     this.setState({
@@ -59,6 +64,7 @@ class PlayBar extends Component {
     }
   };
 
+  // 修改音量时
   handleChangeVolume = volume => {
     this.setState({
       volume: volume
@@ -66,6 +72,7 @@ class PlayBar extends Component {
     this.audioRef.current.volume = volume / 100;
   };
 
+  // 播放 / 暂停
   handleTogglePlayState = () => {
     this.props.onChangePlayState(!this.props.playInfo.playState);
   };
@@ -85,6 +92,7 @@ class PlayBar extends Component {
     });
   };
 
+  // 显示歌单详情
   handleShowMusicDetail = () => {
     if (this.props.curTrack) {
       if (!this.props.isFM) {
@@ -96,6 +104,7 @@ class PlayBar extends Component {
     }
   };
 
+  // 获取评论数
   handleGetCommentCount = async id => {
     let res = await getComment(id, 0);
     if (res.data.code === 200) {
@@ -103,6 +112,32 @@ class PlayBar extends Component {
         commentCount: res.data.total > 999 ? "999+" : res.data.total
       });
     }
+  };
+
+  /**
+   * 收藏歌曲操作
+   * @param {Number} pid 歌单id
+   * @param {Number} trackIds 操作的歌曲id
+   * @param {Boolean} like 操作的是不是我喜欢的歌单
+   */
+  handleChangePlayListSongs = async (pid, trackIds, like) => {
+    const hide = message.loading("添加中...", 0);
+    try {
+      if (like) {
+        this.props.onSetLike(true, trackIds);
+      } else {
+        let res = await changePlayListSongs("add", pid, trackIds);
+        if (res.data.code !== 200) throw new Error("更改歌曲失败！");
+      }
+      // 关闭加载提示
+      setTimeout(hide);
+      message.success("添加歌曲成功！", 1);
+      this.props.onRefreshUserList();
+    } catch (err) {
+      setTimeout(hide);
+      message.error("添加歌曲失败！", 1);
+    }
+    this.setState({ collectVisible: false });
   };
 
   componentDidUpdate(prevProps) {
@@ -156,6 +191,25 @@ class PlayBar extends Component {
     }
   }
 
+  // 点击对应收藏列表时
+  handleClickMenuItem = (type, data) => {
+    this.setState({ modeVisble: false });
+
+    switch (type) {
+      case "download":
+        const { songData, curTrack, singers } = this.props;
+        download(songData.url, curTrack.name + " - " + singers);
+        break;
+
+      case "collect":
+        this.handleChangePlayListSongs(data.pid, data.id, data.like);
+        break;
+
+      default:
+        break;
+    }
+  };
+
   render() {
     const {
       onToogeleSpecifiedSong,
@@ -173,22 +227,71 @@ class PlayBar extends Component {
       tracks
     } = this.props;
 
+    // 音量
     const volumeBar = (
       <div id="bar-volume-bar">
         <Slider vertical defaultValue={100} onChange={this.handleChangeVolume} />
       </div>
     );
 
+    // 收藏歌曲弹出的对话框
+    const collectModal = (
+      <Modal
+        visible={this.state.collectVisible}
+        title={"收藏到..."}
+        onCancel={() => {
+          this.setState({ collectVisible: false });
+        }}
+        footer={null}
+        width={350}
+        className="collect-modal"
+      >
+        <table className="collect-modal-table">
+          <tbody>
+            {this.props.userPlayList.map((oneData, index) => {
+              return (
+                <tr
+                  key={"collectModal" + index}
+                  onClick={this.handleClickMenuItem.bind(this, "collect", {
+                    pid: oneData.id,
+                    id: this.props.curTrack && this.props.curTrack.id,
+                    like: index === 0
+                  })}
+                >
+                  <td className="left">
+                    <img src={oneData.coverImgUrl} alt="" className="cover" />
+                    <p className="name">{index === 0 ? "我喜欢的歌曲" : oneData.name}</p>
+                  </td>
+                  <td className="right">
+                    <p>{oneData.trackCount}首</p>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </Modal>
+    );
+
+    // 播放模式
     const playMode = (
       <div id="bar-play-menu">
         {curTrack && songData.url && (
           <MyIcon
             type="icon-xiazai"
             className="bar-icon icon-download"
-            onClick={download.bind(this, songData.url, curTrack.name + " - " + singers)}
+            onClick={this.handleClickMenuItem.bind(this, "download")}
           />
         )}
-        {isLogged && curIndex >= 0 && <MyIcon type="icon-Add-Folder" className="bar-icon" />}
+        {isLogged && curIndex >= 0 && (
+          <MyIcon
+            type="icon-Add-Folder"
+            className="bar-icon"
+            onClick={() => {
+              this.setState({ collectVisible: true, modeVisble: false });
+            }}
+          />
+        )}
 
         <div id="play-mode">
           <MyIcon
@@ -223,6 +326,7 @@ class PlayBar extends Component {
       </div>
     );
 
+    // 播放列表头部
     const playListTitle = (
       <div className="bar-play-list-title">
         <h4>播放列表</h4>
@@ -230,6 +334,7 @@ class PlayBar extends Component {
       </div>
     );
 
+    // 播放列表内容
     const playListContent = (
       <div className="bar-play-list-content">
         <div className="play-list-content">
@@ -272,7 +377,10 @@ class PlayBar extends Component {
         <div id="bar-left" style={{ width: !isLogged || curIndex < 0 ? "95px" : "190px" }}>
           <div
             className={`bar-lyrices ${this.state.isShowLyrics ? "bar-show-lyrices" : ""}`}
-            onClick={()=>{this.handleToggleShow();message.info("_(:з」∠)_ 该功能尚未完善！");}}
+            onClick={() => {
+              this.handleToggleShow();
+              message.info("_(:з」∠)_ 该功能尚未完善！");
+            }}
           >
             词
           </div>
@@ -294,13 +402,25 @@ class PlayBar extends Component {
                 }}
               />
 
-              <div id="bar-comment" onClick={()=>{message.info("_(:з」∠)_ 该功能尚未完善！")}}>
+              <div
+                id="bar-comment"
+                onClick={() => {
+                  message.info("_(:з」∠)_ 该功能尚未完善！");
+                }}
+              >
                 <MyIcon type="icon-pinglundianjizhuang" className="bar-icon bar-icon-comment" />
                 <p id="bar-comment-num">{this.state.commentCount}</p>
               </div>
             </>
           )}
-          <Popover content={playMode} trigger="click">
+          <Popover
+            content={playMode}
+            trigger="click"
+            visible={this.state.modeVisble}
+            onVisibleChange={modeVisble => {
+              this.setState({ modeVisble });
+            }}
+          >
             <MyIcon type="icon-caidan" className="bar-icon" />
           </Popover>
         </div>
@@ -351,6 +471,8 @@ class PlayBar extends Component {
           </Popover>
         </div>
 
+        {collectModal}
+
         <audio
           ref={this.audioRef}
           autoPlay={true}
@@ -393,6 +515,7 @@ const mapStateToProps = state => {
     playInfo: state.playInfo,
     songData: state.playInfo.songData,
     isFM: state.playInfo.isFM,
+    userPlayList: state.playList.userPlayList,
     tracksLength,
     curIndex,
     curTrack,
@@ -430,6 +553,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onAddFM: () => {
       dispatch(getFM());
+    },
+    onSetLike: (like, id) => {
+      dispatch(setToglleLike(like, id));
+    },
+    onRefreshUserList: () => {
+      dispatch(getuerList());
     }
   };
 };

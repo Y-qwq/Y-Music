@@ -2,6 +2,58 @@
     display: none;
 }
 
+.collect-modal {
+    .ant-modal-body {
+        padding: 0;
+        max-height: 400px;
+        overflow: auto;
+    }
+}
+
+.collect-modal-table {
+    table-layout: fixed;
+    display: inline-block;
+
+    p {
+        margin-top: 14px;
+    }
+
+    tr {
+        &:hover {
+            cursor: pointer;
+            background-color: rgb(236, 236, 236);
+        }
+    }
+
+    .left {
+        padding: 5px 0;
+        padding-left: 30px;
+        display: flex;
+        align-items: center;
+        width: 240px;
+        margin-right: 35px;
+
+        img {
+            width: 50px;
+            min-width:50px;
+            height: 50px;
+            margin-right: 5px;
+        }
+
+        p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: pre;
+        }
+    }
+
+    .right {
+        padding-right: 30px;
+        text-align: right;
+        width: 50px;
+    }
+}
+
 #bar-play-menu {
 
     display: flex;
