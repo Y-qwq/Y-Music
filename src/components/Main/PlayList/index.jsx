@@ -14,7 +14,7 @@ class PlayList extends Component {
       playList: [],
       playListWidth: "",
       showNameId: 0, // 显示该id歌单名字
-      translateX: 0 // 位移量
+      scrollLeft: 0 // 位移量
     };
     // 歌单的Ref
     this.listRef = React.createRef();
@@ -75,6 +75,16 @@ class PlayList extends Component {
       this.props.match.params.type !== preProps.match.params.type
     ) {
       this.initialPlayList(this.props, this.props.match.params.type);
+    }
+
+    // 歌单位置归零
+    if (
+      this.props.categoryList.cat !== preProps.categoryList.cat ||
+      (this.props.isLogged === true &&
+        preProps.isLogged === false &&
+        this.props.categoryList.cat === "")
+    ) {
+      this.listRef.current.scrollLeft = 0;
     }
   }
 
@@ -355,8 +365,8 @@ const mapDispatchToProps = dispatch => {
       e.stopPropagation();
       dispatch(getOnePlayListDetail(id, playall));
     },
-    onSetOffset: translateX => {
-      dispatch(setOffset(translateX));
+    onSetOffset: scrollLeft => {
+      dispatch(setOffset(scrollLeft));
     },
     getNextCategoryPlayList: cat => {
       dispatch(getCategoryPlayList(cat, 50, true));
