@@ -14,7 +14,8 @@ class PlayList extends Component {
       playList: [],
       playListWidth: "",
       showNameId: 0, // 显示该id歌单名字
-      scrollLeft: 0 // 位移量
+      scrollLeft: 0, // 位移量
+      showName: false
     };
     // 歌单的Ref
     this.listRef = React.createRef();
@@ -42,9 +43,13 @@ class PlayList extends Component {
     this.initialPlayList(this.props, this.props.match.params.type);
     this.listRef.current.onwheel = this.handleWheel;
     this.listRef.current.onscroll = this.scrollLister;
+
+    // 快捷键
+    document.addEventListener("keydown", this.handleShowShortcut);
   }
 
   componentWillUnmount() {
+    document.removeEventListener("keydown", this.handleShowShortcut);
     this.props.onSetOffset(this.listRef.current.scrollLeft);
     window.onmouseup = null;
     window.onmousemove = null;
@@ -87,6 +92,17 @@ class PlayList extends Component {
       this.listRef.current.scrollLeft = 0;
     }
   }
+
+  // 按s显示所有歌单歌名
+  handleShowShortcut = e => {
+    if (e.key === "s" && e.target.tagName !== "INPUT") {
+      e.preventDefault();
+      this.handleShowTitle();
+      this.handleUnshowName();
+    }
+  };
+  handleUnshowName = debounce(() => this.setState({ showName: false }), 300);
+  handleShowTitle = debounce(() => this.setState({ showName: true }), 50, true);
 
   // 初始化歌单列表属性
   initialPlayList = (props, type) => {
@@ -225,7 +241,7 @@ class PlayList extends Component {
 
   render() {
     const { categoryList, getOneListDetail, isLogged, match } = this.props;
-    const { playList, imageUrl, showNameId, playListWidth } = this.state;
+    const { playList, imageUrl, showNameId, playListWidth, showName } = this.state;
 
     const showPlayList = (mirror = false) => {
       if (!mirror) {
@@ -246,7 +262,9 @@ class PlayList extends Component {
                   >
                     <p
                       id={detil.id + 77777}
-                      className={`play-list-name ${showNameId === detil.id ? "list-show" : ""}`}
+                      className={`play-list-name ${
+                        showNameId === detil.id || showName === true ? "list-show" : ""
+                      }`}
                     >
                       {detil.name}
                     </p>
@@ -315,7 +333,9 @@ class PlayList extends Component {
               >
                 <p
                   className={`play-list-name ${
-                    showNameId === 1 || showNameId === 2 || showNameId === 3 ? "list-show" : ""
+                    showNameId === 1 || showNameId === 2 || showNameId === 3 || showName === true
+                      ? "list-show"
+                      : ""
                   }`}
                 >
                   根据你的音乐口味生成 日推&nbsp;&nbsp;( *・ω・)✄╰ひ╯
