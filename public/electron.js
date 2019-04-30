@@ -1,5 +1,7 @@
 // Modules to control application life and create native browser window
 const {app, BrowserWindow, ipcMain, Menu, globalShortcut } = require('electron')
+const path = require('path')
+const url = require('url')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -126,8 +128,12 @@ function createWindow () {
     }
   });
 
-  // and load the index.html of the app.
-  mainWindow.loadURL('http://localhost:3000/')
+  // 开发环境使用 http 协议 生产环境使用 file 协议
+  if (process.env.NODE_ENV === 'development') {
+    mainWindow.loadURL('http://localhost:3000/');
+  } else {
+    mainWindow.loadURL(`file://${__dirname}/index.html`);
+  }
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools()

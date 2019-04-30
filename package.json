@@ -2,7 +2,17 @@
   "name": "my-music",
   "version": "0.1.0",
   "private": true,
-  "main": "./public/electronMain.js",
+  "main": "./public/electron.js",
+  "description": "一个数据源自网易云的桌面音乐客户端。",
+  "author": {
+    "name": "Y-qwq",
+    "email": "1015514316@qq.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Y-qwq/Y-Music"
+  },
   "homepage": ".",
   "dependencies": {
     "antd": "^3.16.3",
@@ -17,14 +27,17 @@
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "typescript": "^3.4.5"
   },
   "devDependencies": {
     "babel-plugin-import": "^1.11.0",
+    "cross-env": "^5.2.0",
     "customize-cra": "^0.2.12",
     "electron": "^5.0.0",
+    "electron-builder": "^20.39.0",
     "less": "^3.9.0",
-    "less-loader": "^4.1.0",
+    "less-loader": "^5.0.0",
     "node-sass": "^4.12.0",
     "react-app-rewired": "^2.1.1",
     "redux-logger": "^3.0.6"
@@ -34,7 +47,24 @@
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
-    "ele-start": "electron ."
+    "ele-start": "cross-env NODE_ENV=development electron .",
+    "dist": "electron-builder --win --x64"
+  },
+  "build": {
+    "productName": "Y-Music",
+    "appId": "com.Y-Music.app",
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "zip"
+      ]
+    }
   },
   "eslintConfig": {
     "extends": "react-app"
