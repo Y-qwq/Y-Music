@@ -92,15 +92,16 @@ class PlayBar extends Component {
     });
   };
 
-  // 显示歌单详情
+  // 显示音乐详情
   handleShowMusicDetail = () => {
-    if (this.props.curTrack) {
-      if (!this.props.isFM) {
-        this.props.history.push(`/musicdetail`);
+    const { curTrack, location, history, isFM, onGetLyric } = this.props;
+    if (curTrack) {
+      if (!isFM) {
+        location.pathname !== `/musicdetail` && history.push(`/musicdetail`);
       } else {
-        this.props.history.push(`/FM`);
+        location.pathname !== `/FM` && history.push(`/FM`);
       }
-      this.props.onGetLyric();
+      onGetLyric();
     }
   };
 
