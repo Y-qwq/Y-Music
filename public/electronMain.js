@@ -1,18 +1,18 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow, ipcMain, Menu, Tray, globalShortcut } = require('electron')
-const path = require('path')
-const url = require('url')
+const {app, BrowserWindow, ipcMain, Menu, globalShortcut } = require('electron')
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let mainWindow;
+let forceQuit = false;
 
 const GLOBAL_SHORTCUT = {
   'CommandOrControl+Alt+Right': 'nextMusic',
   'CommandOrControl+Alt+Left': 'prevMusic',
   'CommandOrControl+Alt+Up': 'volumeUp',
   'CommandOrControl+Alt+Down': 'volumeDown',
-  'CommandOrControl+Alt+S': 'changePlayingStatus'
+  'CommandOrControl+Alt+Space': 'changePlayingStatus',
+  'CommandOrControl+Alt+L': 'like'
 };
 
 const template = [
@@ -62,21 +62,6 @@ const template = [
         }
       },
       {
-        label: '切换全屏',
-        accelerator: (function () {
-          if (process.platform === 'darwin') {
-            return 'Ctrl+Command+F';
-          } else {
-            return 'F11';
-          }
-        })(),
-        click: function (item, focusedWindow) {
-          if (focusedWindow) {
-            focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
-          }
-        }
-      },
-      {
         label: '切换开发者工具',
         accelerator: (function () {
           if (process.platform === 'darwin') {
@@ -90,27 +75,6 @@ const template = [
             focusedWindow.toggleDevTools();
           }
         }
-      }
-    ]
-  },
-  {
-    label: '窗口',
-    role: 'window',
-    submenu: [
-      {
-        label: '最小化',
-        accelerator: 'CmdOrCtrl+M',
-        role: 'minimize'
-      },
-      {
-        label: '关闭',
-        accelerator: 'CmdOrCtrl+W',
-        role: 'close'
-      },
-      {
-        label: '退出',
-        accelerator: 'CmdOrCtrl+Q',
-        role: 'quit'
       }
     ]
   }
@@ -147,14 +111,20 @@ function createWindow () {
     titleBarStyle: 'hidden'  //mac隐藏状态栏
   })
 
-  // 关闭window时触发下列事件
-  mainWindow.on('close',function (e){
-    Object.keys(GLOBAL_SHORTCUT).forEach((key) => {
-      globalShortcut.register(key, () => {
-        mainWindow.webContents.send('store-data', GLOBAL_SHORTCUT[key]);
-      });
-    });
-  })
+   // 关闭window时触发下列事件.
+   mainWindow.on('close', function (e) {
+    if (forceQuit) {
+      app.quit();
+    } else {
+      /**
+       * If you close a browser window it will be destroyed, so you can't hide or show it again after that.
+       * Since you want to hide it and show it again later your should add a listener for the close event that calls preventDefault()
+       * and hides the window instead of closing it.
+       */
+      e.preventDefault();
+      mainWindow.hide();
+    }
+  });
 
   // and load the index.html of the app.
   mainWindow.loadURL('http://localhost:3000/')
@@ -169,6 +139,13 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+
+  Object.keys(GLOBAL_SHORTCUT).forEach((key) => {
+    globalShortcut.register(key, () => {
+      mainWindow.webContents.send('store-data', GLOBAL_SHORTCUT[key]);
+    });
+  });
+
 }
 
 // This method will be called when Electron has finished

@@ -20,6 +20,8 @@ import {
 } from "../../redux/actionCreator";
 import "./index.scss";
 
+const { ipcRenderer } = window.require("electron");
+
 class PlayBar extends Component {
   constructor(props) {
     super(props);
@@ -33,6 +35,82 @@ class PlayBar extends Component {
     };
     this.audioRef = React.createRef();
   }
+
+  componentDidMount() {
+    // 全局快捷键按键
+    ipcRenderer.on("store-data", (event, store) => {
+      this.handleGlobalShortcut(store);
+    });
+
+    // 快捷键
+    document.addEventListener("keydown", this.handleShortcut);
+  }
+
+  handleGlobalShortcut = e => {
+    switch (e) {
+      case "volumeUp":
+        this.state.volume < 100 && this.handleChangeVolume(this.state.volume + 1);
+        break;
+      case "volumeDown":
+        this.state.volume > 0 && this.handleChangeVolume(this.state.volume - 1);
+        break;
+      case "nextMusic":
+        this.props.onToggleSong(true);
+        break;
+      case "prevMusic":
+        this.props.onToggleSong(false);
+        break;
+      case "changePlayingStatus":
+        this.handleTogglePlayState();
+        break;
+      case "like":
+        this.props.isLogged && this.props.onToggleLike(true);
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  handleShortcut = e => {
+    if (e.target.tagName === "INPUT") {
+      return;
+    }
+    if (e.key === "Escape" || e.key === "Backspace") {
+      this.props.history.goBack();
+    }
+    if (e.ctrlKey) {
+      switch (e.key) {
+        case " ":
+          e.preventDefault();
+          this.handleTogglePlayState();
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          this.state.volume < 100 && this.handleChangeVolume(this.state.volume + 1);
+          break;
+        case "ArrowDown":
+          e.preventDefault();
+          this.state.volume > 0 && this.handleChangeVolume(this.state.volume - 1);
+          break;
+        case "ArrowRight":
+          e.preventDefault();
+          this.props.onToggleSong(true);
+          break;
+        case "ArrowLeft":
+          e.preventDefault();
+          this.props.onToggleSong(false);
+          break;
+        case "L":
+        case "l":
+          e.preventDefault();
+          this.props.isLogged && this.props.onToggleLike(true);
+          break;
+        default:
+          break;
+      }
+    }
+  };
 
   // 更新当前播放时间
   handleTimeUpdate = e => {
@@ -231,7 +309,12 @@ class PlayBar extends Component {
     // 音量
     const volumeBar = (
       <div id="bar-volume-bar">
-        <Slider vertical defaultValue={100} onChange={this.handleChangeVolume} />
+        <Slider
+          vertical
+          defaultValue={100}
+          value={this.state.volume}
+          onChange={this.handleChangeVolume}
+        />
       </div>
     );
 
