@@ -49,12 +49,14 @@ Description            | Keys
 
 Description            | Keys
 -----------------------| -----------------------
-暂停 / 播放              | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> +  <kbd>Space</kbd>
-音量加                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Up</kbd>
-音量减                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> +  <kbd>Down</kbd>
-上一曲                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Left</kbd>
-下一曲                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Right</kbd>
-喜欢歌曲                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>
+暂停 / 播放              | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +  <kbd>Space</kbd>
+音量加                 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Up</kbd>
+音量减                 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +  <kbd>Down</kbd>
+上一曲                 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Left</kbd>
+下一曲                 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Right</kbd>
+喜欢歌曲                 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd>
+
+>目前最新版本的electron(v5.0.0)全局快捷键Alt有BUG,无法使用，暂时用Shift替代。
 
 ## 支持功能
 

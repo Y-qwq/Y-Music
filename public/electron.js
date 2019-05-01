@@ -9,12 +9,18 @@ let mainWindow;
 let forceQuit = false;
 
 const GLOBAL_SHORTCUT = {
-  'CommandOrControl+Alt+Right': 'nextMusic',
-  'CommandOrControl+Alt+Left': 'prevMusic',
-  'CommandOrControl+Alt+Up': 'volumeUp',
-  'CommandOrControl+Alt+Down': 'volumeDown',
-  'CommandOrControl+Alt+Space': 'changePlayingStatus',
-  'CommandOrControl+Alt+L': 'like'
+  'CommandOrControl+Shift+Right': 'nextMusic',
+  'CommandOrControl+Shift+Left': 'prevMusic',
+  'CommandOrControl+Shift+Up': 'volumeUp',
+  'CommandOrControl+Shift+Down': 'volumeDown',
+  'CommandOrControl+Shift+Space': 'changePlayingStatus',
+  'CommandOrControl+Shift+L': 'like'
+  // 'CommandOrControl+Alt+Right': 'nextMusic',
+  // 'CommandOrControl+Alt+Left': 'prevMusic',
+  // 'CommandOrControl+Alt+Up': 'volumeUp',
+  // 'CommandOrControl+Alt+Down': 'volumeDown',
+  // 'CommandOrControl+Alt+Space': 'changePlayingStatus',
+  // 'CommandOrControl+Alt+L': 'like'
 };
 
 const template = [
@@ -152,6 +158,8 @@ function createWindow () {
     });
   });
 
+  // 检测注册事件
+  // globalShortcut.isRegistered('CommandOrControl+Alt+Space')
 }
 
 // This method will be called when Electron has finished
