@@ -1,10 +1,11 @@
 # Y-Music
+
 >一个数据源自网易云的桌面音乐客户端。
 
 ## 介绍
 Y-Music是基于 React、Redux、Nedb、Electron 开发的网易云第三方桌面音乐客户端，数据API源自 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)。
 
-UI看人吧，我自己觉得挺好看的( 毕竟自己画的嘛哈哈哈[]~(￣▽￣)~* ),不过也有一些不合理的地方(底部播放条没有进度条，音乐和歌单详情界面没有返回按钮(通过鼠标右键后者esc/Backspace返回))，鼠标侧键返回太过习惯了，画图时完全没考虑过这个问题= =，这些懒得改了，直接塞按钮感觉没地方塞，又懒得重新画图(￣y▽,￣)╭ 。
+UI看人吧，我自己觉得挺好看的( 毕竟自己画的嘛哈哈哈[]\~(￣▽￣)\~* ),不过也有一些不合理的地方(底部播放条没有进度条，音乐和歌单详情界面没有返回按钮(通过鼠标右键后者esc/Backspace返回))，鼠标侧键返回太过习惯了，画图时完全没考虑过这个问题= =，这些懒得改了，直接塞按钮感觉没地方塞，又懒得重新画图(￣y▽,￣)╭ 。
 
 操作习惯同网易云(如双击歌单的某首歌曲，歌单会替换播放列表、双击搜索的歌曲仅播放该歌曲不改变播放列表等)
 
@@ -86,6 +87,45 @@ Description            | Keys
 - [x] 评论数量
 - [ ] 评论详情
 - [ ] 外置歌词
+
+## 安装
+
+### 下载
+
+```shell
+ $ git clone https://github.com/Y-qwq/Y-Music
+ $ cd Y-Music
+ $ yarn
+
+ // 下载子模块
+$ git submodule update --init --recursive
+$ cd NeteaseCloudMusicApi
+$ yarn
+$ cd ..
+```
+
+### 运行
+
+```shell
+ // NeteaseCloudMusicApi下
+ $ yarn start
+
+ // Y-Music下
+ $ yarn start
+ $ yarn ele-start
+```
+
+### 打包
+
+```shell
+ // React打包
+ $ yarn build
+
+ // ...漫长的等待
+ 
+ // Electron打包
+ $ yarn dist
+```
 
 ## License
 
