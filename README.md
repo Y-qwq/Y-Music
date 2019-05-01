@@ -54,6 +54,7 @@ Description            | Keys
 音量减                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> +  <kbd>Down</kbd>
 上一曲                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Left</kbd>
 下一曲                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Right</kbd>
+喜欢歌曲                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>
 
 ## 支持功能
 
