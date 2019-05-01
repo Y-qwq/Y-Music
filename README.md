@@ -11,18 +11,23 @@ UI看人吧，我自己觉得挺好看的( 毕竟自己画的嘛哈哈哈[]~(￣
 ## 预览
 ![主界面](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/%E4%B8%BB%E7%95%8C%E9%9D%A2.png "主界面")
 
+---
 
 ![音乐标签](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/%E6%AD%8C%E5%8D%95%E6%A0%87%E7%AD%BE.png "音乐标签")
 
+---
 
 ![FM](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/FM.png "FM")
 
+---
 
 ![音乐详情](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/%E9%9F%B3%E4%B9%90%E8%AF%A6%E6%83%85.png "音乐详情")
 
+---
 
 ![歌单&歌手&专辑详情界面](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/%E6%AD%8C%E5%8D%95%26%E6%AD%8C%E6%89%8B%26%E4%B8%93%E8%BE%91%E8%AF%A6%E6%83%85%E7%95%8C%E9%9D%A2.png "歌单&歌手&专辑详情界面")
 
+---
 
 ![搜索](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C.png "搜索")
 
