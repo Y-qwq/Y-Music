@@ -1,5 +1,5 @@
 import axios from 'axios';
-export const HOSTNAME = 'http://localhost:4000';
+export const HOSTNAME = 'http://localhost:3000';
 
 let timestamp = () => new Date().getTime();
 

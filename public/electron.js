@@ -136,7 +136,7 @@ function createWindow () {
 
   // 开发环境使用 http 协议 生产环境使用 file 协议
   if (process.env.NODE_ENV === 'development') {
-    mainWindow.loadURL('http://localhost:3000/');
+    mainWindow.loadURL('http://localhost:5000/');
   } else {
     mainWindow.loadURL(`file://${__dirname}/index.html`);
   }
