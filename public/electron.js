@@ -1,12 +1,8 @@
-// Modules to control application life and create native browser window
+// 引入electron并创建一个Browserwindow
 const {app, BrowserWindow, ipcMain, Menu, globalShortcut } = require('electron')
-const path = require('path')
-const url = require('url')
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+// 保持window对象的全局引用,避免JavaScript对象被垃圾回收时,窗口被自动关闭.
 let mainWindow;
-let forceQuit = false;
 
 const GLOBAL_SHORTCUT = {
   'CommandOrControl+Shift+Right': 'nextMusic',
@@ -102,8 +98,6 @@ ipcMain.on('show', () => {
   mainWindow.focus();
 });
 
-
-
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -119,21 +113,6 @@ function createWindow () {
     titleBarStyle: 'hidden'  //mac隐藏状态栏
   })
 
-   // 关闭window时触发下列事件.
-   mainWindow.on('close', function (e) {
-    if (forceQuit) {
-      app.quit();
-    } else {
-      /**
-       * If you close a browser window it will be destroyed, so you can't hide or show it again after that.
-       * Since you want to hide it and show it again later your should add a listener for the close event that calls preventDefault()
-       * and hides the window instead of closing it.
-       */
-      e.preventDefault();
-      mainWindow.hide();
-    }
-  });
-
   // 开发环境使用 http 协议 生产环境使用 file 协议
   if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL('http://localhost:5000/');
@@ -141,14 +120,11 @@ function createWindow () {
     mainWindow.loadURL(`file://${__dirname}/index.html`);
   }
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // 打开开发者工具，默认不打开
+  // mainWindow.webContents.openDevTools()
 
-  // Emitted when the window is closed.
+  // 关闭window时触发下列事件.
   mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     mainWindow = null
   })
 
@@ -162,9 +138,7 @@ function createWindow () {
   // globalShortcut.isRegistered('CommandOrControl+Alt+Space')
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+// 当 Electron 完成初始化并准备创建浏览器窗口时调用此方法
 app.on('ready', ()=>{
   createWindow();
   
@@ -172,22 +146,21 @@ app.on('ready', ()=>{
   Menu.setApplicationMenu(menu);
 })
 
-// Quit when all windows are closed.
+// 所有窗口关闭时退出应用.
 app.on('window-all-closed', function () {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
+  // macOS中除非用户按下 `Cmd + Q` 显式退出,否则应用与菜单栏始终处于活动状态.
   if (process.platform !== 'darwin') {
-    app.quit()
+    app.quit();
   }
 })
 
 app.on('activate', function () {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow()
-  }
+  // macOS中点击Dock图标时没有已打开的其余应用窗口时,则通常在应用中重建一个窗口
+ if (mainWindow === null) {
+   createWindow()
+ }
 })
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+app.on('before-quit', (e) => {
+  mainWindow = null;
+});
