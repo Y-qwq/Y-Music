@@ -52,7 +52,7 @@
   },
   "build": {
     "productName": "Y-Music",
-    "appId": "com.Y-Music.app",
+    "appId": "org.Y-Music.app",
     "mac": {
       "target": [
         "dmg",
@@ -60,6 +60,7 @@
       ]
     },
     "win": {
+      "icon": "./public/icon.ico",
       "target": [
         "nsis"
       ]
