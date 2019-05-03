@@ -11,7 +11,8 @@ export default Form.create({ name: "login" })(
   // eslint-disable-next-line
   class extends React.Component {
     state = {
-      loginType: "cellphone"
+      loginType: "cellphone",
+      checked: true
     };
 
     // 切换登录模式
@@ -25,6 +26,11 @@ export default Form.create({ name: "login" })(
           loginType: "cellphone"
         });
       }
+    };
+
+    toggleChecked = e => {
+      console.log(e.target.checked);
+      this.setState({ checked: e.target.checked });
     };
 
     render() {
@@ -46,7 +52,7 @@ export default Form.create({ name: "login" })(
             this.props.showLoginModal(false);
 
             // 如果选择了auto login ，将账号信息存入数据库
-            if (values.remember) {
+            if (this.state.checked) {
               let doc = {
                 _id: "userAccount",
                 loginType: this.state.loginType,
@@ -123,10 +129,9 @@ export default Form.create({ name: "login" })(
             <Form.Item>
               {loginFailedMsg ? <p style={{ color: "red" }}>{loginFailedMsg + "!"}</p> : ""}
 
-              {getFieldDecorator("remember", {
-                valuePropName: "checked",
-                initialValue: true
-              })(<Checkbox>Auto Login</Checkbox>)}
+              <Checkbox checked={this.state.checked} onChange={this.toggleChecked}>
+                Auto Login
+              </Checkbox>
 
               <a className="login-form-forgot" onClick={this.handleChangeLoginType}>
                 {loginType === "cellphone" ? "Email Login" : "Phone Login"}
