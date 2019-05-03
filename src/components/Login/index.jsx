@@ -29,7 +29,6 @@ export default Form.create({ name: "login" })(
     };
 
     toggleChecked = e => {
-      console.log(e.target.checked);
       this.setState({ checked: e.target.checked });
     };
 
