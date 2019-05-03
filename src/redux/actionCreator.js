@@ -83,16 +83,8 @@ export const login = (account, password, type, isAuto, lastTime) => {
                 dispatch(getrecommendList());
                 dispatch(getuerList(res.data.account.id));
                 // if (!lastTime || lastTime !== new Date().getDate()) {
-                //     try {
-                //         await getSignin(0); //pc端签到
-                //     } catch (error) {
-                //         console.log(error.response.data.msg);
-                //     }
-                //     try {
-                //         await getSignin(1); //安卓端签到
-                //     } catch (error) {
-                //         console.log(error.response.data.msg);
-                //     }
+                //     await getSignin(0); //pc端签到
+                //     await getSignin(1); //安卓端签到
                 // }
             } else {
                 dispatch(loginFailed('登录异常'))
@@ -288,36 +280,32 @@ export const getoneLyric = () => {
         const playInfo = getState().playInfo;
         if (playInfo.currentIndex < 0) return;
         const id = playInfo.tracks[playInfo.currentIndex].id;
-        try {
-            let res = await getLyric(id);
-            if (res.data.lrc && !res.data.uncollected) {
-                let {
-                    lrc: {
-                        lyric: oLrc
-                    },
-                    tlyric: {
-                        lyric: tLrc
-                    }
-                } = res.data;
-                if (oLrc) {
-                    oLrc = parseLrc(oLrc);
-                    // 合并翻译歌词到原歌词内[['time','oLrc','tLrc']...]
-                    if (tLrc) {
-                        tLrc = parseLrc(tLrc);
-                        let flag = 0;
-                        try {
-                            for (const index of oLrc.keys()) {
-                                if (oLrc[index][0] === tLrc[flag][0]) {
-                                    oLrc[index].push(tLrc[flag++][1]);
-                                }
-                            }
-                        } catch (err) {}
-                    }
-                    dispatch(lyric(oLrc));
+        let res = await getLyric(id);
+        if (res.data.lrc && !res.data.uncollected) {
+            let {
+                lrc: {
+                    lyric: oLrc
+                },
+                tlyric: {
+                    lyric: tLrc
                 }
+            } = res.data;
+            if (oLrc) {
+                oLrc = parseLrc(oLrc);
+                // 合并翻译歌词到原歌词内[['time','oLrc','tLrc']...]
+                if (tLrc) {
+                    tLrc = parseLrc(tLrc);
+                    let flag = 0;
+                    try {
+                        for (const index of oLrc.keys()) {
+                            if (oLrc[index][0] === tLrc[flag][0]) {
+                                oLrc[index].push(tLrc[flag++][1]);
+                            }
+                        }
+                    } catch (err) {}
+                }
+                dispatch(lyric(oLrc));
             }
-        } catch (err) {
-            console.log(err && err.response && err.response.data && err.response.data.msg);
         }
     }
 }
@@ -355,13 +343,10 @@ export const insertSongToPlay = (index, track) => {
 
 //获取歌曲url
 export const getSongUrls = async (id) => {
-    try {
-        let res = await getSongUrl(id);
-        if (res.data.code === 200) {
-            return res.data.data;
-        }
-    } catch (err) {
-        console.log(err && err.response && err.response.data && err.response.data.msg);
+    let res = await getSongUrl(id);
+    if (res.data.code === 200) {
+        return res.data.data;
+    } else {
         return null;
     }
 }
@@ -465,18 +450,14 @@ export const getFM = () => {
         if (!playInfo.isFM) {
             dispatch(playAll([]));
         }
-        try {
-            let res = await getPersonalFM();
-            if (res.data.code === 200) {
-                if (!playInfo.isFM) {
-                    dispatch(playAll(res.data.data, true));
-                    dispatch(onToggleSong(true, false, true));
-                } else {
-                    dispatch(addPlayAll(res.data.data));
-                }
+        let res = await getPersonalFM();
+        if (res.data.code === 200) {
+            if (!playInfo.isFM) {
+                dispatch(playAll(res.data.data, true));
+                dispatch(onToggleSong(true, false, true));
+            } else {
+                dispatch(addPlayAll(res.data.data));
             }
-        } catch (err) {
-            console.log(err && err.response && err.response.data && err.response.data.msg);
         }
     }
 }
@@ -500,18 +481,14 @@ export const setToglleLike = (isLike, trackId) => {
             // 喜欢当前播放歌曲
             id = playInfo.tracks[curIndex].id;
         }
-        try {
-            let res;
-            if (isLike) {
-                res = await setLike(id, true);
-            } else {
-                res = await setLike(id, false);
-            }
-            if (res.data.code === 200) {
-                dispatch(toggleLike(id, isLike));
-            }
-        } catch (err) {
-            console.log(err && err.response && err.response.data && err.response.data.msg);
+        let res;
+        if (isLike) {
+            res = await setLike(id, true);
+        } else {
+            res = await setLike(id, false);
+        }
+        if (res.data.code === 200) {
+            dispatch(toggleLike(id, isLike));
         }
     }
 }
@@ -520,13 +497,9 @@ export const setToglleLike = (isLike, trackId) => {
 export const getLikeListInfo = () => {
     return async (dispatch, getState) => {
         let uid = getState().user.userInfo.account.id;
-        try {
-            let res = await getLikeList(uid);
-            let likeList = new Set(res.data.ids);
-            dispatch(setLikeList(likeList));
-        } catch (err) {
-            console.log(err && err.response && err.response.data && err.response.data.msg);
-        }
+        let res = await getLikeList(uid);
+        let likeList = new Set(res.data.ids);
+        dispatch(setLikeList(likeList));
     }
 }
 
@@ -596,13 +569,9 @@ export const setOffset = (translateX) => {
 export const getUserSubcountInfo = () => {
     return async (dispatch, getState) => {
         if (getState().user.isLogged) {
-            try {
-                let res = await getUserSubcount();
-                if (res.data.code === 200) {
-                    dispatch(setUserSubcount(res.data))
-                }
-            } catch (err) {
-                console.log(err && err.response && err.response.data && err.response.data.msg);
+            let res = await getUserSubcount();
+            if (res.data.code === 200) {
+                dispatch(setUserSubcount(res.data))
             }
         }
     }
@@ -611,16 +580,12 @@ export const getUserSubcountInfo = () => {
 //获取歌单详细信息
 export const getOnePlayListDetail = (id, playall = false) => {
     return async dispatch => {
-        try {
-            let res = await getPlayListDetail(id);
-            if (res.data.code === 200 && playall) {
-                if (playall) {
-                    dispatch(playAll(res.data.playlist.tracks));
-                    dispatch(onToggleSong(true, false, true));
-                }
+        let res = await getPlayListDetail(id);
+        if (res.data.code === 200 && playall) {
+            if (playall) {
+                dispatch(playAll(res.data.playlist.tracks));
+                dispatch(onToggleSong(true, false, true));
             }
-        } catch (err) {
-            console.log(err && err.response && err.response.data && err.response.data.msg);
         }
     }
 }
@@ -628,13 +593,9 @@ export const getOnePlayListDetail = (id, playall = false) => {
 // 推荐歌单or未登录歌单列表
 export const getPersonalizedList = () => {
     return async dispatch => {
-        try {
-            let res = await getPersonalizedPlayList();
-            if (res.data.code === 200) {
-                dispatch(personalizedPlayList(res.data.result));
-            }
-        } catch (err) {
-            console.log(err && err.response && err.response.data && err.response.data.msg);
+        let res = await getPersonalizedPlayList();
+        if (res.data.code === 200) {
+            dispatch(personalizedPlayList(res.data.result));
         }
     }
 }
@@ -643,14 +604,10 @@ export const getPersonalizedList = () => {
 // 登录后的日推歌单
 export const getrecommendList = () => {
     return async dispatch => {
-        try {
-            let res = await getRecommendPlayList();
-            if (res.data.code === 200) {
-                console.log(res.data);
-                dispatch(recommendPlayList(res.data.recommend));
-            }
-        } catch (err) {
-            console.log(err && err.response && err.response.data && err.response.data.msg);
+        let res = await getRecommendPlayList();
+        if (res.data.code === 200) {
+            console.log(res.data);
+            dispatch(recommendPlayList(res.data.recommend));
         }
     }
 }
@@ -658,16 +615,12 @@ export const getrecommendList = () => {
 // 用户的歌单
 export const getuerList = (id) => {
     return async (dispatch, getState) => {
-        let uid = id || getState().user.userInfo.account.id;
-        try {
-            let res = await getUserPlayList(uid);
-            if (res.data.code === 200) {
-                dispatch(uerPlayList(res.data.playlist));
-                // 获取用户歌单后再获取各类歌单数目，以区分自建歌单和收藏歌单
-                dispatch(getUserSubcountInfo());
-            }
-        } catch (err) {
-            console.log(err && err.response && err.response.data && err.response.data.msg);
+    let uid = id || getState().user.userInfo.account.id;
+        let res = await getUserPlayList(uid);
+        if (res.data.code === 200) {
+            dispatch(uerPlayList(res.data.playlist));
+            // 获取用户歌单后再获取各类歌单数目，以区分自建歌单和收藏歌单
+            dispatch(getUserSubcountInfo());
         }
     }
 }
@@ -680,13 +633,9 @@ export const getCategoryPlayList = (cat, limit = 50, isNext) => {
         if (isNext && catList.more) {
             offset = catList.playlists.length;
         }
-        try {
-            let res = await getOneCategory(cat, limit, offset);
-            if (res.data.code === 200) {
-                dispatch(categoryPlayList(res.data, offset > 0 ? true : false));
-            }
-        } catch (err) {
-            console.log(err && err.response && err.response.data && err.response.data.msg);
+        let res = await getOneCategory(cat, limit, offset);
+        if (res.data.code === 200) {
+            dispatch(categoryPlayList(res.data, offset > 0 ? true : false));
         }
     }
 }
