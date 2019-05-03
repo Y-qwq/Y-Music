@@ -116,12 +116,12 @@ function createWindow () {
   // 开发环境使用 http 协议 生产环境使用 file 协议
   if (process.env.NODE_ENV === 'development') {
     mainWindow.loadURL('http://localhost:5000/');
+    // 打开开发者工具，默认不打开
+    mainWindow.webContents.openDevTools()
   } else {
     mainWindow.loadURL(`file://${__dirname}/index.html`);
   }
 
-  // 打开开发者工具，默认不打开
-  // mainWindow.webContents.openDevTools()
 
   // 关闭window时触发下列事件.
   mainWindow.on('closed', function () {
