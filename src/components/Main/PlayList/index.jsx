@@ -352,7 +352,7 @@ class PlayList extends Component {
           </div>
 
           <div className="main-list-mirror">
-            {isLogged && match.params.type === "find" && categoryList.playlists === undefined && (
+            {isLogged && match.params.type === "find" && !categoryList.cat && (
               <div className="play-list-daily">
                 <p className="week">{this.week}</p>
                 <p className="day">{new Date().getDate()}</p>
