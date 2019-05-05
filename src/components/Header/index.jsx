@@ -142,13 +142,18 @@ class Header extends Component {
     }
   };
 
-  // 自动查询搜索建议
-  handleAutoSearch = async value => {
+  handleSetSearch = value => {
     this.setState({ searchValue: value });
     if (!value) {
       this.setState({ suggestData: [] });
       return;
     }
+    this.handleAutoSearch(value);
+  }
+
+  // 自动查询搜索建议
+  handleAutoSearch = async value => {
+    
     let res = await getSuggest(value);
     if (res.data.code === 200) {
       if (res.data.result.order) {
@@ -252,7 +257,7 @@ class Header extends Component {
               style={{ backgroundColor: "rgba($color: #fff, $alpha: 0)" }}
               dataSource={this.renderOptions()}
               onSelect={this.handleSelect}
-              onSearch={this.handleAutoSearch}
+              onSearch={this.handleSetSearch}
             >
               <input
                 id="header-search-text"
