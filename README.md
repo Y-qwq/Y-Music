@@ -11,6 +11,8 @@ UI看人吧，我自己觉得挺好看的( 毕竟自己画的嘛哈哈哈[]\~(�
 
 >[百度云盘链接](https://pan.baidu.com/s/1cql6t2KPRbaSRkpwICzVGQ)
 
+>练手项目，有些地方感觉设计的不太好，以及还有几个功能待完成，这些等以后有时间再继续完善，现在找实习ing...
+
 ## 预览
 ![主界面](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/%E4%B8%BB%E7%95%8C%E9%9D%A2.png "主界面")
 
