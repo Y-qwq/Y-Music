@@ -34,7 +34,7 @@
     "babel-plugin-import": "^1.11.0",
     "cross-env": "^5.2.0",
     "customize-cra": "^0.2.12",
-    "electron": "^5.0.0",
+    "electron": "^5.0.1",
     "electron-builder": "^20.39.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
@@ -67,7 +67,7 @@
     },
     "nsis": {
       "oneClick": false,
-      "perMachine": true, 
+      "perMachine": true,
       "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
