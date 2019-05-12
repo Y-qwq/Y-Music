@@ -11,7 +11,10 @@ UI看人吧，我自己觉得挺好看的( 毕竟自己画的嘛哈哈哈[]\~(�
 
 >[百度云盘链接](https://pan.baidu.com/s/1cql6t2KPRbaSRkpwICzVGQ)
 
+>练手项目，有些地方感觉设计的不太好，以及还有几个功能待完成，这些等以后有时间再继续完善，现在找实习ing...
+
 ## 预览
+
 ![主界面](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/%E4%B8%BB%E7%95%8C%E9%9D%A2.png "主界面")
 
 ---
@@ -52,14 +55,12 @@ Description            | Keys
 
 Description            | Keys
 -----------------------| -----------------------
-暂停 / 播放              | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +  <kbd>Space</kbd>
-音量加                 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Up</kbd>
-音量减                 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> +  <kbd>Down</kbd>
-上一曲                 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Left</kbd>
-下一曲                 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Right</kbd>
-喜欢歌曲                 | <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd>
-
->目前最新版本的electron(v5.0.0)全局快捷键Alt有BUG,无法使用，暂时用Shift替代。
+暂停 / 播放              | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> +  <kbd>Space</kbd>
+音量加                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Up</kbd>
+音量减                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> +  <kbd>Down</kbd>
+上一曲                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Left</kbd>
+下一曲                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Right</kbd>
+喜欢歌曲                 | <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>L</kbd>
 
 ## 支持功能
 
@@ -87,6 +88,7 @@ Description            | Keys
 - [x] 音量控制
 - [x] 喜欢歌曲
 - [x] 评论数量
+- [ ] 在线更新
 - [ ] 评论详情
 - [ ] 外置歌词
 
