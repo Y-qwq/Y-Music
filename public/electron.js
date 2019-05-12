@@ -5,18 +5,12 @@ const {app, BrowserWindow, ipcMain, Menu, globalShortcut } = require('electron')
 let mainWindow;
 
 const GLOBAL_SHORTCUT = {
-  'CommandOrControl+Shift+Right': 'nextMusic',
-  'CommandOrControl+Shift+Left': 'prevMusic',
-  'CommandOrControl+Shift+Up': 'volumeUp',
-  'CommandOrControl+Shift+Down': 'volumeDown',
-  'CommandOrControl+Shift+Space': 'changePlayingStatus',
-  'CommandOrControl+Shift+L': 'like'
-  // 'CommandOrControl+Alt+Right': 'nextMusic',
-  // 'CommandOrControl+Alt+Left': 'prevMusic',
-  // 'CommandOrControl+Alt+Up': 'volumeUp',
-  // 'CommandOrControl+Alt+Down': 'volumeDown',
-  // 'CommandOrControl+Alt+Space': 'changePlayingStatus',
-  // 'CommandOrControl+Alt+L': 'like'
+  'CommandOrControl+Alt+Right': 'nextMusic',
+  'CommandOrControl+Alt+Left': 'prevMusic',
+  'CommandOrControl+Alt+Up': 'volumeUp',
+  'CommandOrControl+Alt+Down': 'volumeDown',
+  'CommandOrControl+Alt+Space': 'changePlayingStatus',
+  'CommandOrControl+Alt+L': 'like'
 };
 
 const template = [
