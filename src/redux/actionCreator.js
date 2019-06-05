@@ -252,6 +252,7 @@ const parseLrc = lrc => {
     lines[lines.length - 1].length === 0 && lines.pop();
 
     for (let data of lines) {
+        if (!data) continue;
         // 获取内容
         let index = data.lastIndexOf("]");
         let value = data.substring(index + 1);
@@ -615,7 +616,7 @@ export const getrecommendList = () => {
 // 用户的歌单
 export const getuerList = (id) => {
     return async (dispatch, getState) => {
-    let uid = id || getState().user.userInfo.account.id;
+        let uid = id || getState().user.userInfo.account.id;
         let res = await getUserPlayList(uid);
         if (res.data.code === 200) {
             dispatch(uerPlayList(res.data.playlist));

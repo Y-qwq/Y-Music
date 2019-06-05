@@ -88,6 +88,8 @@ class PlayListDetail extends Component {
     let res = await getPlayListDetail(id);
     res.data.code === 200 &&
       this.setState({
+        artistsName: "ar",
+        albumName: "al",
         detail: res.data.playlist,
         createrId: res.data.playlist.userId,
         coverImgUrl: res.data.playlist.coverImgUrl
@@ -100,6 +102,8 @@ class PlayListDetail extends Component {
     if (res.data.code === 200) {
       res.data.album.tracks = res.data.songs;
       this.setState({
+        artistsName: "ar",
+        albumName: "al",
         coverImgUrl: res.data.album.picUrl,
         detail: res.data.album,
         createrId: -1
@@ -114,6 +118,8 @@ class PlayListDetail extends Component {
       res.data.artist.tracks = res.data.hotSongs;
       res.data.artist.description = res.data.artist.briefDesc;
       this.setState({
+        artistsName: "ar",
+        albumName: "al",
         coverImgUrl: res.data.artist.img1v1Url,
         detail: res.data.artist,
         createrId: -1

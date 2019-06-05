@@ -31,7 +31,8 @@ class PlayBar extends Component {
       collectVisible: false,
       modeVisble: false,
       commentCount: 0,
-      volume: 100
+      volume: 100,
+      hide: false
     };
     this.audioRef = React.createRef();
   }
@@ -44,6 +45,7 @@ class PlayBar extends Component {
 
     // 快捷键
     document.addEventListener("keydown", this.handleShortcut);
+    window.addEventListener("visibilitychange", this.handleCheckWindow);
   }
 
   handleGlobalShortcut = e => {
@@ -112,9 +114,19 @@ class PlayBar extends Component {
     }
   };
 
+  // 监听窗口是否隐藏
+  handleCheckWindow = () => {
+    this.setState({
+      hide: document.hidden ? true : false
+    });
+  };
+
   // 更新当前播放时间
   handleTimeUpdate = e => {
-    if (this.props.location.pathname === "/musicdetail" || this.props.location.pathname === "/FM") {
+    if (
+      !this.state.hide &&
+      (this.props.location.pathname === "/musicdetail" || this.props.location.pathname === "/FM")
+    ) {
       this.props.onSetCurrentTime(e.currentTarget.currentTime);
     }
   };
