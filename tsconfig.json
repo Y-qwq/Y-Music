@@ -6,6 +6,7 @@
       "dom.iterable",
       "esnext"
     ],
+    "outDir": "./dist/",
     "allowJs": true,
     "checkJs": true,
     "skipLibCheck": true,
@@ -22,7 +23,8 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "src"
+    "src",
+    "public/electron.js"
   ],
   "extends": "./tsconfig.paths.json"
 }
