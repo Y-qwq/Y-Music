@@ -1,87 +1,61 @@
 {
-  "name": "my-music",
+  "name": "music",
   "version": "0.1.0",
   "private": true,
-  "main": "./public/electron.js",
-  "description": "一个数据源自网易云的桌面音乐客户端。",
-  "author": {
-    "name": "Y-qwq",
-    "email": "1015514316@qq.com"
-  },
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Y-qwq/Y-Music"
-  },
-  "homepage": ".",
-  "dependencies": {
-    "antd": "^3.16.6",
-    "axios": "^0.18.0",
-    "d3-ease": "^1.0.5",
-    "nedb": "^1.8.0",
-    "react": "^16.8.4",
-    "react-contexify": "^4.0.2",
-    "react-dom": "^16.8.4",
-    "react-move": "^5.2.1",
-    "react-redux": "^6.0.1",
-    "react-router-dom": "^5.0.0",
-    "react-scripts": "2.1.8",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0",
-    "typescript": "^3.4.5"
-  },
-  "devDependencies": {
-    "babel-plugin-import": "^1.11.0",
-    "cross-env": "^5.2.0",
-    "customize-cra": "^0.2.12",
-    "electron": "^5.0.1",
-    "electron-builder": "^20.39.0",
-    "less": "^3.9.0",
-    "less-loader": "^5.0.0",
-    "node-sass": "^4.12.0",
-    "react-app-rewired": "^2.1.1",
-    "redux-logger": "^3.0.6"
-  },
   "scripts": {
-    "start": "set PORT=5000 && react-app-rewired start",
-    "build": "react-app-rewired build",
-    "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
-    "ele-start": "cross-env NODE_ENV=development electron .",
-    "dist": "electron-builder --win --x64"
+    "start": "craco start",
+    "build": "craco build",
+    "eject": "react-scripts eject"
   },
-  "build": {
-    "productName": "Y-Music",
-    "appId": "org.Y-Music.app",
-    "mac": {
-      "target": [
-        "dmg",
-        "zip"
-      ]
-    },
-    "win": {
-      "icon": "./public/icon.ico",
-      "target": [
-        "nsis"
-      ]
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": true,
-      "allowElevation": true,
-      "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "Y-Music"
-    }
+  "dependencies": {
+    "@craco/craco": "^6.1.1",
+    "@types/node": "^12.0.0",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/react-redux": "^7.1.16",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/redux": "^3.6.0",
+    "ahooks": "^2.9.6",
+    "antd": "^4.12.2",
+    "antd-dayjs-webpack-plugin": "^1.0.6",
+    "babel-plugin-import": "^1.13.3",
+    "craco-less": "^1.17.1",
+    "less": "^4.1.1",
+    "lodash-es": "^4.17.20",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-redux": "^7.2.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.2",
+    "redux": "^4.0.5",
+    "redux-actions": "^2.6.5",
+    "redux-logger": "^3.0.6",
+    "redux-promise": "^0.6.0",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0",
+    "tsconfig-paths-webpack-plugin": "^3.3.0",
+    "typescript": "^4.1.2",
+    "web-vitals": "^1.0.1"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app"
+    ]
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/redux-logger": "^3.0.8",
+    "@types/redux-promise": "^0.5.29"
+  }
 }
