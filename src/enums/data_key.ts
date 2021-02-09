@@ -1,3 +1,3 @@
-export const DataKey = {
-  USER: { value: 'user' },
-};
+export enum DATA_KEY {
+  USER = 'user'
+}

@@ -15,6 +15,6 @@ export const updater = new class Updater {
   update = <T>(older: T, newer: T, config: Partial<Iconfig> = defaultConfig) => {
     const { merge, equal } = { ...defaultConfig, ...config };
     if (equal(older, newer)) return older;
-    return merge(older, newer) as T;
+    return merge(older, newer);
   };
 }();
