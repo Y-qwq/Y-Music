@@ -3,10 +3,10 @@ import { updater, EqualStrategy } from '@utils/index';
 import { login } from './action';
 
 export interface IUser {
-  profile: {
-    userId?: number,
-    avatarUrl?: string,
-    nickname?: string,
+  profile?: {
+    userId: number,
+    avatarUrl: string,
+    nickname: string,
   }
 }
 
@@ -16,6 +16,4 @@ export const userReducer = handleActions({
       equal: EqualStrategy.shallowEqualStrategy
     });
   }
-}, {
-  profile: {}
-});
+}, {});
