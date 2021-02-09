@@ -9,7 +9,7 @@
     "web-start": "cross-env BROWSER=none craco start",
     "web-build": "craco build",
     "ele-start": "cross-env NODE_ENV=development electron .",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}' --quiet --fix",
     "eject": "react-scripts eject"
   },
   "dependencies": {
