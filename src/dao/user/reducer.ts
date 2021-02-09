@@ -1,5 +1,5 @@
 import { handleActions, Action } from 'redux-actions';
-import { updater, EqualStrategy } from '@utils/index';
+import { updater, EqualStrategy } from '@/utils';
 import { login } from './action';
 
 export interface IUser {

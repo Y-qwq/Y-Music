@@ -2,15 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@/*": ["src/*"],
-      "@enums/*": ["src/enums/*"],
-      "@common/*": ["src/common/*"],
-      "@components/*": ["src/components/*"],
-      "@utils/*": ["src/utils/*"],
-      "@dao/*": ["src/dao/*"],
-      "@assets/*": ["src/assets/*"],
-      "@redux/*": ["src/redux/*"],
-      "@routers/*": ["src/routers/*"]
+      "@/*": ["src/*"]
     }
   }
 }

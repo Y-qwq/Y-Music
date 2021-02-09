@@ -1,5 +1,5 @@
 import { Route } from 'react-router-dom';
-import { Home } from '@components/home';
+import { Home } from '@/components/home';
 
 export const RootRoutes = () => {
   return (

@@ -1,9 +1,9 @@
-import axios from 'axios';
-import { IObject, IRequire } from '@utils/ts';
+import Axios from 'axios';
+import { IObject, IRequire } from '@/types';
 
-export const require = axios.create({
+export const axios = Axios.create({
   baseURL: 'https://yezijun.top:3000',
 });
 
-export const GET: IRequire = (path: string, params: IObject = {}) => require.get(path, { params });
-export const POST = require.post;
+export const GET: IRequire = (path: string, params: IObject = {}) => axios.get(path, { params });
+export const POST = axios.post;

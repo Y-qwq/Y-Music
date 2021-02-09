@@ -1,5 +1,5 @@
-import { IRequire } from '@/utils/ts';
-import { GET } from '@utils/index';
+import { IRequire } from '@/types';
+import { GET } from '@/utils';
 
 export const phoneLogin: IRequire = (phone: string, password: string) => {
   return GET('/login/cellphone', {

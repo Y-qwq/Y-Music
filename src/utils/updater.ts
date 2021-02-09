@@ -1,5 +1,5 @@
-import { deepEqualStrategy } from '@utils/equal_strategy';
-import { overrideMergeStrategy } from '@utils/merge_strategy';
+import { deepEqualStrategy } from '@/utils/equal_strategy';
+import { overrideMergeStrategy } from '@/utils/merge_strategy';
 
 interface Iconfig {
   merge: <T>(older: T, newer: T) => T;
