@@ -4,7 +4,7 @@ import { Home } from '@components/home';
 export const RootRoutes = () => {
   return (
     <>
-      <Route exact path='/'>
+      <Route exact path="/">
         <Home />
       </Route>
     </>

@@ -1,5 +1,6 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
-const { app, BrowserWindow, ipcMain } = require('electron')
+import { app, BrowserWindow, ipcMain } from 'electron';
 
 let mainWindow = null;
 

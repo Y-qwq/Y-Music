@@ -7,7 +7,6 @@ import { Provider } from 'react-redux';
 import { store } from '@redux/index';
 import { RootRoutes } from '@routers/index';
 
-
 const Main = () => {
   return (
     <Provider store={store}>

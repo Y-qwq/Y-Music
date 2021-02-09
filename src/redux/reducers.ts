@@ -4,7 +4,7 @@ import { DATA_KEY } from '@enums/index';
 
 const reducersMap = {
   [DATA_KEY.USER]: userReducer,
-}
+};
 
 export const reducers = combineReducers(reducersMap);
 
