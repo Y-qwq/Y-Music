@@ -13,6 +13,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.4.0",
     "@craco/craco": "^6.1.1",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^12.0.0",

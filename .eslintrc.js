@@ -33,5 +33,6 @@ module.exports = {
   // "error" 或 2 - 开启规则，使用错误级别的错误：error (当被触发的时候，程序会退出)
   rules: {
     'react/react-in-jsx-scope': 'off', // React17 jsx文件编译不再集成再react中
+    // '@typescript-eslint/explicit-module-boundary-types': 'off',
   },
 };

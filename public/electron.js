@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { app, BrowserWindow, ipcMain } from 'electron';
+const { app, BrowserWindow, ipcMain } = require('electron');
 
 let mainWindow = null;
 

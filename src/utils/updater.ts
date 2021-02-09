@@ -3,7 +3,7 @@ import { overrideMergeStrategy } from '@utils/merge_strategy';
 
 interface Iconfig {
   merge: <T>(older: T, newer: T) => T;
-  equal: (older: any, newer: any) => boolean;
+  equal: (older: unknown, newer: unknown) => boolean;
 }
 
 const defaultConfig: Iconfig = {
