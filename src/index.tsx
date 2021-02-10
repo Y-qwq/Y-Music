@@ -1,3 +1,5 @@
+import '@/styles/default/index.less';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from '@/utils/reportWebVitals';
