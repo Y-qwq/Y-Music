@@ -2,6 +2,8 @@
 
 >一个数据源自网易云的桌面音乐客户端。
 
+>两年前练手项目，代码一坨屎，重起项目慢慢重构中...
+
 ## 介绍
 
 Y-Music是基于 React、Redux、Nedb、Electron 开发的网易云第三方桌面音乐客户端，数据API源自 [Binaryify/NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)。
@@ -12,33 +14,29 @@ UI看人吧，我自己觉得挺好看的( 毕竟自己画的嘛哈哈哈[]\~(�
 
 操作习惯同网易云(如双击歌单的某首歌曲，歌单会替换播放列表、双击搜索的歌曲仅播放该歌曲不改变播放列表等)
 
->[百度云盘链接](https://pan.baidu.com/s/1cql6t2KPRbaSRkpwICzVGQ)
-
->练手项目，有些地方感觉设计的不太好，以及还有几个功能待完成，这些等以后有时间再继续重构完善
-
 ## 预览
 
-![主界面](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/%E4%B8%BB%E7%95%8C%E9%9D%A2.png "主界面")
+![主界面](https://github.com/Y-qwq/Y-Music/blob/master/docs/image/%E4%B8%BB%E7%95%8C%E9%9D%A2.png "主界面")
 
 ---
 
-![音乐标签](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/%E6%AD%8C%E5%8D%95%E6%A0%87%E7%AD%BE.png "音乐标签")
+![音乐标签](https://github.com/Y-qwq/Y-Music/blob/master/docs/image/%E6%AD%8C%E5%8D%95%E6%A0%87%E7%AD%BE.png "音乐标签")
 
 ---
 
-![FM](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/FM.png "FM")
+![FM](https://github.com/Y-qwq/Y-Music/blob/master/docs/image/FM.png "FM")
 
 ---
 
-![音乐详情](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/%E9%9F%B3%E4%B9%90%E8%AF%A6%E6%83%85.png "音乐详情")
+![音乐详情](https://github.com/Y-qwq/Y-Music/blob/master/docs/image/%E9%9F%B3%E4%B9%90%E8%AF%A6%E6%83%85.png "音乐详情")
 
 ---
 
-![歌单&歌手&专辑详情界面](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/%E6%AD%8C%E5%8D%95%26%E6%AD%8C%E6%89%8B%26%E4%B8%93%E8%BE%91%E8%AF%A6%E6%83%85%E7%95%8C%E9%9D%A2.png "歌单&歌手&专辑详情界面")
+![歌单&歌手&专辑详情界面](https://github.com/Y-qwq/Y-Music/blob/master/docs/image/%E6%AD%8C%E5%8D%95%26%E6%AD%8C%E6%89%8B%26%E4%B8%93%E8%BE%91%E8%AF%A6%E6%83%85%E7%95%8C%E9%9D%A2.png "歌单&歌手&专辑详情界面")
 
 ---
 
-![搜索](https://github.com/Y-qwq/Y-Music/blob/dev/docs/image/%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C.png "搜索")
+![搜索](https://github.com/Y-qwq/Y-Music/blob/master/docs/image/%E6%90%9C%E7%B4%A2%E7%BB%93%E6%9E%9C.png "搜索")
 
 ## 快捷键
 
