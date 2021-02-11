@@ -1,0 +1,16 @@
+#text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// -webkit-box为非标准feat，只在 chrome 才会生效
+#textarea-ellipsis(@count: 3;) {
+  display: -webkit-box;
+  /* autoprefixer: ignore next */
+  -webkit-box-orient: vertical;
+  line-clamp: @count;
+  /* autoprefixer: ignore next */
+  -webkit-line-clamp: @count;
+  overflow: hidden;
+}

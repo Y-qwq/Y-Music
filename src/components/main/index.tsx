@@ -1,5 +1,3 @@
-import './index.less';
-
 import zhCN from 'antd/lib/locale/zh_CN';
 import { FC } from 'react';
 import { ConfigProvider } from 'antd';
